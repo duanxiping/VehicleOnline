@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/icons-car.css" />
+		<link href="css/iconfont.css" rel="stylesheet" />
+		<style>
+			body, .mui-content {
+				background-color: #efeff4;
+				color: #000;
+			}
+			
+			header {
+				background-color: #fff!important;
+			}
+			header.mui-bar{
+				/*display: none;*/
+			}
+
+			 .title{
+			  	margin: 20px;
+			  }
+			  .title+.content{
+			  	margin: 10px 15px 35px;
+			  	color: #bbb;
+			  	text-indent: 1em;
+			  	font-size: 14px;
+			  	line-height: 24px;
+			  }
+			  .mui-table-view{
+			  	/*margin-bottom: 35px;*/
+			  }
+			  
+			  .mui-table-view-cell {
+			  	font-size: 14px;
+			  }
+			  
+			  #info {
+			  	line-height: 40px;
+			  	padding: 20px;
+			  	text-align: center;
+			  }
+			  
+			  #info img {
+			  	vertical-align: middle;
+			  }
+			  
+			  /*.mui-media-object {
+			  	padding: 5px;
+			  }*/
+			  
+			  .mui-table-view-cell.mui-collapse .mui-collapse-content {
+				    /* display: none; */
+				     overflow: visible; 
+				     padding: 0px; 
+				     margin-left: -40px;
+    					padding-right: 10px;
+				}
+				
+				.search input[type=search] {
+					margin-bottom: 0px;
+					font-size: 12px;
+					background-color: #fff;
+				}
+				
+				.mui-search .mui-placeholder {
+					padding-top: 3px;
+					font-size: 13px;
+				}
+				
+				.mui-search.mui-active:before {
+				    margin-top: -20px;
+				}
+				
+				.mui-icon-search:before {
+				    /*padding-right: 90px;*/
+				}
+				
+				.mui-ellipsis {
+					font-size: 12px;
+				}
+
+				.mui-scroll-wrapper {
+					padding-top: 44px;
+				}
+				
+				.vehicle-list, .customer, .vehicle, .customer-list, .customer-name, .vehicle-name, .gpsTime, .status {
+					
+				}
+				
+				.mui-table-view-cell {
+				    background-color: #ffffff;
+				}
+				
+				.mui-input {
+					font-size: 14px;
+				}
+				.mui-input-group {
+					background-color: #fcfcfc;
+					padding-left: 10px;
+				}
+				.mui-input-group:before {
+				    background-color: #fcfcfc; 
+				}
+				
+				.mui-input-group .mui-input-row:after {
+				    background-color: #fcfcfc; 
+				}
+				
+				.mui-input-group:after {
+				    background-color: #fcfcfc; 
+				}
+				
+				.mui-table-view-chevron {
+					background-color: #fcfcfc;
+				}
+				
+				.mui-input-row label {
+				    width: 45%;
+				}
+				
+				.mui-table-view-cell.mui-collapse .mui-table-view .mui-table-view-cell {
+				    /*padding-left: 31px;*/
+				    /*background-position: 31px 100%;*/
+				    background-color: #fcfcfc;
+				}
+				
+				.mui-radio input[type=radio] {
+				    right: 5px;
+				}
+				
+				.mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea {
+				    text-align: right;
+				}
+				
+				.mui-input-row .mui-btn {
+				    font-size: 14px;
+				    padding: 10px 10px;
+				}
+				
+				.notice {
+					color: #007AFF
+				}
+		</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title">参数设置</h1>
+		</header>	
+		<div id="content" class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-collapse">设置车辆：<span id='vehicle-name'></span></li>
+			</ul>
+			<ul id="params-list" class="mui-table-view">
+				<li id="1" class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">远程断油/断电</a>
+						<div class="mui-collapse-content">
+							<ul class="mui-table-view mui-table-view-chevron">
+								<li class="mui-table-view-cell">
+									<form class="mui-input-group">
+										<div class="mui-input-row mui-radio">
+											<label>断油/断电</label>
+											<input name="engine" type="radio" value='1' onclick='setEngineSwitch(this.value)'>
+										</div>
+										<div class="mui-input-row mui-radio">
+											<label>恢复</label>
+											<input name="engine" type="radio" value='0' onclick='setEngineSwitch(this.value)'>
+										</div>
+										<div class="mui-input-row">
+											<label>登陆密码</label>
+											<input id='password' type="password" class="mui-input" placeholder="输入登陆密码" style="width: 55%; float: right;">
+										</div>
+									</form>
+								</li>
+							</ul>
+						</div>
+					</a>
+				</li>
+				<li id="2" class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">一键设防</a>
+						<div class="mui-collapse-content">
+							<ul class="mui-table-view mui-table-view-chevron">
+								<li class="mui-table-view-cell">
+									<form class="mui-input-group">
+										<div class="mui-input-row mui-radio">
+											<label>设防</label>
+											<input name="stand" type="radio" value='1' onclick="setStandSwitch(this.value)">
+										</div>
+										<div class="mui-input-row mui-radio">
+											<label>撤防</label>
+											<input name="stand" type="radio" value='0' onclick="setStandSwitch(this.value)">
+										</div>
+										<!--<div class="mui-input-row">
+											<label>设防设置围栏(米)</label>
+											<div class="mui-numbox" data-numbox-step='100' data-numbox-min='100' data-numbox-max='2000'>
+												<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+												<input id='standGeofence' class="mui-input-numbox" type="number" value="200" />
+												<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+											</div>										
+										</div>-->
+									</form>
+								</li>
+							</ul>
+						</div>
+					</a>
+				</li>
+				<li id="3" class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">回传间隔</a>
+						<div class="mui-collapse-content">
+							<ul class="mui-table-view">
+								<li class="mui-table-view-cell">
+									<form class="mui-input-group">
+										<div class="mui-input-row">
+											<label>回传间隔(秒)</label>
+											<div class="mui-numbox" data-numbox-step='10' data-numbox-min='10' data-numbox-max='180'>
+												<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+												<input id="interval" class="mui-input-numbox" type="number" value="30"/>
+												<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+											</div>
+										</div>
+									</form>
+								</li>
+							</ul>
+						</div>
+					</a>
+				</li>	
+				<li id="4" class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">超速报警</a>
+						<div class="mui-collapse-content">
+							<ul class="mui-table-view">
+								<li class="mui-table-view-cell">
+									<form class="mui-input-group">
+										<div class="mui-input-row">
+											<label>限速(km/h)</label>
+											<div class="mui-numbox" data-numbox-step='10' data-numbox-min='40' data-numbox-max='200'>
+												<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+												<input id="speedLimit" class="mui-input-numbox" type="number" value="80" />
+												<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+											</div>
+										</div>
+									</form>
+								</li>
+							</ul>
+						</div>
+					</a>
+				</li>	
+				<!--<li id="5" class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">回传设置(无线设备)</a>
+						<div class="mui-collapse-content">
+							<ul class="mui-table-view">
+								<li class="mui-table-view-cell">
+									<form class="mui-input-group">
+										<div class="mui-input-row">
+											<label>上报时间</label>
+											<select id="uploadTime" class="mui-btn mui-btn-block">
+												<option value="0">0点</option>
+												<option value="1">1点</option>
+												<option value="2">2点</option>
+												<option value="3">3点</option>
+												<option value="4">4点</option>
+												<option value="5">5点</option>
+												<option value="6">6点</option>
+												<option value="7">7点</option>
+												<option value="8">8点</option>
+												<option value="9">9点</option>
+												<option value="10">10点</option>
+												<option value="11">11点</option>
+												<option value="12">12点</option>
+												<option value="13">13点</option>
+												<option value="14">14点</option>
+												<option value="15">15点</option>
+												<option value="16">16点</option>
+												<option value="17">17点</option>
+												<option value="18">18点</option>
+												<option value="19">19点</option>
+												<option value="20">20点</option>
+												<option value="21">21点</option>
+												<option value="22">22点</option>
+												<option value="23">23点</option>									
+											</select>
+										</div>
+									</form>
+								</li>
+							</ul>
+						</div>
+					</a>
+				</li>
+				<li id="6" class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">追踪模式</a>
+						<div class="mui-collapse-content">
+							<ul class="mui-table-view">
+								<li class="mui-table-view-cell">
+									<form class="mui-input-group">
+										<div class="mui-input-row mui-radio">
+											<label>开启</label>
+											<input name="track" type="radio" value='1'>
+										</div>
+										<div class="mui-input-row mui-radio">
+											<label>关闭</label>
+											<input name="track" type="radio" value='2'>
+										</div>
+										<div class="mui-input-row">
+											<label>回传间隔(秒)</label>
+											<div class="mui-numbox" data-numbox-step='10' data-numbox-min='10' data-numbox-max='300'>
+												<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+												<input id="trackInterval" class="mui-input-numbox" type="number" value="30" />
+												<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+											</div>										
+										</div>
+										<div class="mui-input-row">
+											<label>追踪时间(分)</label>
+											<div class="mui-numbox" data-numbox-step='5' data-numbox-min='5' data-numbox-max='200'>
+												<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+												<input id="trackTime" class="mui-input-numbox" type="number" value="60" />
+												<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+											</div>										
+										</div>
+									</form>
+								</li>
+							</ul>
+						</div>
+					</a>
+				</li>-->
+				<li id="7" class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">重启设备</a>
+						<div class="mui-collapse-content">
+							<ul class="mui-table-view">
+
+							</ul>
+						</div>
+					</a>
+				</li>					
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-collapse"><span class="notice">提示：请确认设备支持选择的设置指令</span></li>
+			</ul>			
+			<div class="mui-content-padded">
+				<button id='send' class="mui-btn mui-btn-block mui-btn-primary" data-loading-text="设置中...">设置</button>
+			</div>		
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/immersed.js" ></script>
+		<script src="js/mapjs/global.js"></script>
+		<script src="js/wistorm/define.js"></script>
+		<script src="js/wistorm/wistorm.js"></script>
+		<script src="js/wistorm/md5.js"></script>
+		<script src="js/app.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				keyEventBind: {
+//					backbutton: false,
+//					menubutton: false
+				}
+			});
+			var engineSwitch = -1;
+			var setEngineSwitch = function(value){
+				engineSwitch = value;
+			}
+			var standSwitch = -1;
+			var setStandSwitch = function(value){
+				standSwitch = value;
+			}
+			
+			mui.plusReady(function () {	
+				var vehicleName = document.getElementById('vehicle-name');
+				window.addEventListener('show', function(event){
+					console.log('device set page show');
+					var currentVehicle = app.getCurrentVehicle();
+					console.log(JSON.stringify(currentVehicle));
+					if(currentVehicle){
+						vehicleName.innerHTML = currentVehicle.name;
+					}
+				});
+				//获得侧滑主窗口webview对象
+				var state = app.getState();
+				var sendButton = document.getElementById("send");
+				sendButton.addEventListener('tap', function(event){
+					var activeId = document.getElementById('params-list').querySelector('.mui-active').id;
+					var currentVehicle = app.getCurrentVehicle();
+					var cmdType = 0;
+					var params = {};
+					var _this = this;
+					console.log(activeId);
+					switch(activeId){
+						case '1':
+							var password = document.getElementById('password');
+							if(password.value === ''){
+								plus.nativeUI.toast('请输入登陆密码进行安全校验');
+								return;
+							}else if(hex_md5(password.value) !== state.password){
+								plus.nativeUI.toast('密码错误，请重新输入');
+								return;
+							}
+							var cmdType = IOT_CMD.VEHICLE_CONTORL;
+							var params = {
+								'flag': 4,
+								'switch': engineSwitch
+							};
+							break;
+						case '2':
+							var cmdType = IOT_CMD.VEHICLE_CONTORL;
+							var params = {
+								'flag': 2,
+								'switch': standSwitch
+							};						
+							break;
+						case '3':
+							var interval = document.getElementById('interval');
+							var cmdType = IOT_CMD.SET_PARAM;
+							var params = {
+								'param_id': 0x0029,
+								'param_value': interval.value
+							};								
+							break;
+						case '4':
+							var speedLimit = document.getElementById('speedLimit');
+							var cmdType = IOT_CMD.SET_PARAM;
+							var params = {
+								'param_id': 0x0055,
+								'param_value': speedLimit.value
+							};							
+							break;
+						case '5':						
+							break;
+						case '6':
+							break;
+						case '7':
+							var cmdType = IOT_CMD.DEVICE_CONTORL;
+							var params = {
+								'control_cmd': 0x05,
+								'control_param': ''
+							};		
+							break;
+					}
+					mui(this).button('loading');
+					app.sendCommand(currentVehicle.did, cmdType, params, function(err) {
+						if(err) {
+							plus.nativeUI.toast(err);
+							mui(_this).button('reset');
+							return;
+						}
+						mui(_this).button('reset');
+						plus.nativeUI.toast('指令执行成功');
+					});
+				});				
+			})
+		</script>
+</body>
+
+</html>

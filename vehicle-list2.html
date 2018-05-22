@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>车辆列表</title>
+		<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/style.css" />
+		<link href="css/iconfont.css" rel="stylesheet" />
+		<style>
+			body, .mui-content {
+				background-color: #efeff4;
+				color: #000;
+			}
+			header.mui-bar{
+				display: none;
+			}
+			.mui-bar-nav~.mui-content{
+				padding: 0;
+			}
+			 .title{
+			  	margin: 20px;
+			  }
+			  .title+.content{
+			  	margin: 10px 15px 35px;
+			  	color: #bbb;
+			  	text-indent: 1em;
+			  	font-size: 14px;
+			  	line-height: 24px;
+			  }
+			  .mui-table-view{
+			  	margin-bottom: 35px;
+			  }
+			  
+			  .mui-table-view-cell {
+			  	font-size: 14px;
+			  }
+			  
+			  #info {
+			  	padding-top: 20px;
+			  	text-align: center;
+			  }
+		</style>
+	</head>
+	<body>
+		<div id="header" class="mui-content">
+			<div class="title">车辆列表
+				<a id="add" class="mui-icon iconfont icon-tianjia1 mui-pull-right"></a>
+			</div>
+			<div class="mui-scroll">
+				<ul class="mui-table-view mui-table-view-radio">
+					<!--<li class="mui-table-view-cell">
+										<a class="mui-navigate-right">
+											测试车辆1
+										</a>
+									</li>-->
+					<!--<li class="mui-table-view-cell mui-selected">
+										<a class="mui-navigate-right">
+											测试车辆2
+										</a>
+									</li>
+									<li class="mui-table-view-cell">
+										<a class="mui-navigate-right">
+											测试车辆3
+										</a>
+									</li>-->
+				</ul>
+			</div>
+			<p id="info">目前没有车辆</p>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/immersed.js" ></script>
+		<script src="js/wistorm/define.js"></script>
+		<script src="js/wistorm/wistorm.js"></script>
+		<script src="js/wistorm/md5.js"></script>
+		<script src="js/app.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				keyEventBind: {
+					backbutton: false,
+					menubutton: false
+				}
+			});
+			//获得侧滑主窗口webview对象
+			var main = null;
+			mui.plusReady(function () {
+				main = plus.webview.currentWebview().opener();
+				// 加载车辆列表			
+				loadVehicle();				
+				var addVehiclePage = mui.preload({
+					"id": 'vehicle-add',
+					"url": 'vehicle.html'
+				});	
+				var addButton = document.getElementById('add');
+				addButton.addEventListener('tap', function(event) {
+					mui.fire(addVehiclePage, 'show', { mode: 0 });
+					setTimeout(function() {
+						addVehiclePage.show("pop-in");
+					}, 100);
+				});
+			})
+			function closeMenu () {
+				mui.fire(main,"menu:swipeleft");
+			}
+			//优化显示出来的侧滑菜单，只需监听该菜单的左滑事件，然后将其关闭即可；在菜单上右滑，不做任何操作；
+			window.addEventListener("swipeleft", closeMenu);  
+			mui.menu = closeMenu;
+			
+			//更新车辆列表
+			window.addEventListener('refresh', function(event){
+				loadVehicle();
+			});
+			
+			//加载或者刷新车辆
+			var loadVehicle = function() {
+//				var length = ul.querySelectorAll('li').length;
+//				var fragment = document.createDocumentFragment();
+//				var li;
+//				for(var i = 0; i < count; i++) {
+//					li = document.createElement('li');
+//					li.className = 'mui-table-view-cell';
+//					li.innerHTML = '第' + (index + 1) + '个选项卡子项-' + (length + (reverse ? (count - i) : (i + 1)));
+//					fragment.appendChild(li);
+//				}
+//				return fragment;
+				app.listVehicle(function(obj){
+					var ul = document.querySelector('.mui-table-view');
+					ul.innerHTML = "";
+					var currentVehicle = app.getCurrentVehicle();
+//					console.log(JSON.stringify(currentVehicle));
+					// 如果没有已选中的车辆，则默认第一辆车为选中
+					if(!currentVehicle && obj.total > 0){
+						var vehicle = {
+					  		id: obj.data[0].objectId.toString(),
+					  		name: obj.data[0].name,
+					  		did: obj.data[0].did
+					  	};
+					  	app.setCurrentVehicle(vehicle);
+					  	console.log(JSON.stringify(vehicle));
+					  	// 刷新主页标题
+						mainPage = plus.webview.getWebviewById('main');
+						mui.fire(mainPage, 'refreshTitle', null);
+						// 刷新定位页面
+						gpsPage = plus.webview.getWebviewById('tab-webview-subpage-map.html');
+						mui.fire(gpsPage, 'refreshLocation', null);						
+					}
+					for(var i = 0; i < obj.total; i++) {
+						li = document.createElement('li');
+						li.id = obj.data[i].objectId.toString();
+						li.setAttribute("plate", obj.data[i].name); 
+						li.setAttribute("did", obj.data[i].did); 
+						li.className = (currentVehicle && li.id == currentVehicle.id) || (!currentVehicle && i == 0) ? 'mui-table-view-cell mui-selected':'mui-table-view-cell';
+						li.innerHTML = '<a class="mui-navigate-right">' + obj.data[i].name + '</a>';
+						ul.appendChild(li);
+					}	
+					var info = document.getElementById('info');
+					info.style.display = obj.total > 0 ? 'none': 'block';
+					//添加列表项的点击事件
+					mui('.mui-table-view').on('tap', '.mui-table-view-cell', function(e) {
+						var id = this.getAttribute('id');
+					  	var name = this.getAttribute('plate');
+					  	var did = this.getAttribute('did');
+					  	var vehicle = {
+					  		id: id,
+					  		name: name,
+					  		did: did
+					  	};
+					  	vehicle = app.getLocalVehicle(did) || vehicle;
+					  	app.setCurrentVehicle(vehicle);
+					  	// 刷新主页标题
+						mainPage = plus.webview.getWebviewById('main');
+						mui.fire(mainPage, 'refreshTitle', null);
+						// 刷新定位页面
+						gpsPage = plus.webview.getWebviewById('tab-webview-subpage-map.html');
+						mui.fire(gpsPage, 'refreshLocation', null);
+						// 自动关闭菜单
+						closeMenu();
+					});
+				});
+				
+			};
+		</script>
+</body>
+
+</html>

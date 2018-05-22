@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/icons-extra.css" rel="stylesheet" />
+		<link href="css/iconfont.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			header {
+				background-color: #FFFFFF!important;
+				box-shadow: 0 0 0!important;
+			}
+			
+			#content {
+				position: relative;
+			}
+			
+			#date-select {
+				width: 100%;
+				height: 50px;
+				left: 0px;
+				right: 0px;
+				top: 0px;
+				margin: 0px;
+				background-color: #FFFFFF;
+				padding-top: 10px;
+				padding-left: 10px;
+				padding-right: 10px;
+				text-align: center;
+			}
+			
+			#time-select {
+				width: 100%;
+				height: 35px;
+				left: 0px;
+				right: 0px;
+				top: 0px;
+				margin: 0px;
+				background-color: #FFFFFF;
+				padding-top: 0px;
+				padding-left: 10px;
+				padding-right: 10px;
+				text-align: center;
+				font-size: 13px;
+				border-top: solid 1px #F0F0F0;
+				color: #999;
+			}
+			
+			.day-btn {
+				border-radius: 20px;
+				font-size: 12px;
+				background-color: transparent;
+			}
+			
+			.date-today {
+				right: 40px;
+				left: 40px;
+				display: inline-block;
+				overflow: hidden;
+				width: auto;
+				margin: 0;
+				font-size: 14px;
+				color: #007aff;
+				padding-top: 5px;
+			}
+			
+			.arrow {
+				padding-top: 5px;
+				color: #007aff
+			}
+			
+			.end-time-label {
+				padding-left: 30px;
+			}
+			
+			.mui-all-result {
+				width: 100%;
+				height: 70px;
+				padding: 10px;
+				line-height: 25px;
+				background-color: #FFFFFF!important;
+				border-top: solid #F2F2F2 1px;
+			}
+			
+			.mui-all-left-box {
+				width: 50%;
+				display: inline-block;
+			}
+			
+			.mui-all-right-box {
+				width: 48%;
+				float: right;
+				padding-left: 40px;
+				display: inline-block;
+			}
+			
+			.mui-sub-ul {
+				/*position: absolute;
+				top: 130px;*/
+				list-style: none;
+				padding: 0;
+			}
+			
+			.mui-sub-ul-li {
+				position: relative;
+				width: 100%;
+				/*padding: 10px;*/
+				margin-top: 10px;
+				height: 185px;
+				background-color: #FFFFFF!important;
+			}
+			
+			.mui-li-start-stop-location-time {
+				width: 100%;
+				height: 62px;
+				/*line-height: 25px;*/
+				padding: 10px;
+				border-bottom: solid #F2F2F2 1px;
+			}
+			
+			.mui-li-start-stop-location {
+				display: inline-block;
+				float: left;
+			}
+			
+			.mui-li-start-stop-time {
+				display: inline-block;
+				float: right;
+			}
+			
+			.mui-icon-location {
+				font-size: 18px;
+				margin-bottom: 0;
+			}
+			
+			.mui-mileage-time {
+				height: 30px;
+				display: block;
+				line-height: 30px;
+				margin-left: 10px;
+				color: #BFBFBF;
+			}
+			
+			.mui-avg-speed-box {
+				height: 60px;
+				background-color: #F0F8FF;
+				padding: 10px;
+				/*line-height: 25px;*/
+			}
+			
+			.li-bottom-right-box {
+				height: 30px;
+				width: 120px;
+				right: 10px;
+				position: absolute;
+				line-height: 36px;
+			}
+			
+			.icon-fenxiang {
+				padding-left: 20px;
+			}
+			
+			.mui-icon-location {
+				font-size: 22px;
+				margin-bottom: 0;
+				padding-left: 10px;
+			}
+			
+			.mui-icon-more {
+				font-size: 22px;
+				margin-bottom: 0;
+				padding-left: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">车辆行程</h1>
+		</header>
+
+		<div id="content" class="mui-content">
+			<!--日期选择面板-->
+			<div id="date-select">
+				<button id="Prev" class="mui-pull-left mui-btn mui-btn-primary mui-btn-outlined day-btn">上一天</button>
+				<span id="arrow"><h5 id="date" class="date-today">今天</h5><i class="mui-icon iconfont icon-xia arrow"></i></span>
+				<button id="Next" class="mui-pull-right mui-btn mui-btn-primary mui-btn-outlined day-btn" disabled>下一天</button>
+			</div>
+			<div class="mui-all-result">
+				<div class="mui-all-left-box">
+					<span>行驶总里程: </span><span id="all-mileage">0.0km</span><br/>
+					<span>百公里油耗: </span><span id="all-oil-km">0.0L</span>
+				</div>
+				<div class="mui-all-right-box">
+					<span>总油耗: </span><span id="all-oil-wear">0.0L</span><br/>
+					<!--<span>花费: </span><span id="all-spend">24.2元</span>-->
+				</div>
+			</div>
+			<ul id="vehicle-travle-list" class="mui-sub-ul">
+				<!--<li class="mui-sub-ul-li">
+					<div class="mui-li-start-stop-location-time">	
+						<div class="mui-li-start-stop-location">
+							<span>起点: 起始位置</span><br/>
+							<span>终点: 结束位置</span>
+						</div>
+						<div class="mui-li-start-stop-time">
+							<span><p id="start-location" class="mui-icon mui-icon-location"></p> 07:36</span><br/>
+							<span><p id="stop-location" class="mui-icon mui-icon-location" ></p> 08:14</span>
+						</div>
+					</div>
+					<span class="mui-mileage-time">共19.2公里\38分钟</span>
+					<div class="mui-avg-speed-box">
+						<div class="mui-all-left-box">
+							<span>百公里油耗: </span><span id="single-mileage">42.7km</span><br/>
+							<span>平均速度: </span><span id="single-kilometers">10.1L</span>
+						</div>
+						<div class="mui-all-right-box">
+							<span>油耗: </span><span id="single-oil-wear">4.3L</span><br/>
+						</div>
+					</div>
+					<div class="li-bottom-right-box">
+						<span id="share" class="mui-icon iconfont icon-fenxiang"></span>
+						<span id="location" class="mui-icon mui-icon-location"></span>
+						<span id="more" class="mui-icon mui-icon-more"></span>
+					</div>
+				</li>-->
+			</ul>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/wistorm/define.js"></script>
+		<script src="js/wistorm/wistorm.js"></script>
+		<script src="js/wistorm/md5.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/immersed.js"></script>
+		<script>
+			mui.plusReady(function() {
+				var PrevButton = document.getElementById('Prev');
+				var NextButton = document.getElementById('Next');
+				var dateBox = document.getElementById('date');
+				var startTimeBox = document.getElementById('start-time');
+				var endTimeBox = document.getElementById('end-time');
+				var totalMileage = document.getElementById('all-mileage');
+				var totalOilWear = document.getElementById('all-oil-wear');
+				var totalOilKM = document.getElementById('all-oil-km');
+				var weekDay = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+				var selectDay = new Date();
+				var today = new Date();
+				//获取当前车辆
+				var currentVehicle = app.getCurrentVehicle();
+				window.addEventListener('refreshTravel', function(event) {
+					setDate(new Date(selectDay.setDate(selectDay.getDate())));
+				});
+				var setDate = function(date) {
+					var dates = date.format("yyyy-MM-dd");
+					dateBox.innerHTML = dates == today.format("yyyy-MM-dd") ? '今天' : dates;
+					NextButton.disabled = selectDay >= today;
+					tripDatas(dates);
+				};
+				PrevButton.addEventListener('tap', function(event) {
+					setDate(new Date(selectDay.setDate(selectDay.getDate() - 1)));
+				});
+				NextButton.addEventListener('tap', function(event) {
+					setDate(new Date(selectDay.setDate(selectDay.getDate() + 1)));
+				});
+				var dateButton = document.getElementById('arrow');
+				dateButton.addEventListener('tap', function(event) {
+					var dDate = new Date();
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						setDate(d);
+					}, function(e) {}, {
+						title: "选择日期",
+						date: dDate,
+						maxDate: today
+					});
+				});
+				//获取车辆行程数据
+				var tripDatas = function(dates) {
+					app.vehicleTripData(currentVehicle.did, dates, function(travelData) {
+						if(travelData.data) {
+							console.log(JSON.stringify(travelData));
+							var tld = travelData.data;
+							var distance = 0;
+							var distanceTotal = 0;
+							var fuel = 0;
+							var fuelTotal = 0;
+							var duration = 0;
+							var startTime = 0;
+							var startLat = 0;
+							var startLon = 0;
+							var endTime = 0;
+							var endLon = 0;
+							var endLat = 0;
+							var avgSpeed = [];
+							var oilKM = [];
+							var ul = document.getElementById('vehicle-travle-list');
+							ul.innerHTML = '';
+							for(var i = 0; i < tld.length; i++) {
+								distance = tld[i].distance;
+								fuel = tld[i].fuel;
+								duration = tld[i].duration;
+								startTime = new Date(tld[i].startTime).format('hh:mm');
+								endTime = new Date(tld[i].endTime).format('hh:mm');
+								startLat = tld[i].startLat;
+								startLon = tld[i].startLon;
+								endLon = tld[i].endLon;
+								endLat = tld[i].endLat;
+								distanceTotal = distanceTotal + tld[i].distance;
+								fuelTotal = fuelTotal + tld[i].fuel;
+								avgSpeed[i] = parseFloat(distance / (duration / 3600)).toFixed(1);
+								oilKM[i] = parseFloat(fuel / distance * 100).toFixed(1);
+								var li = document.createElement('li');
+								var _index = i;
+								var locations="locations"+i;
+								var share="share"+i;
+								var more="more"+i;
+								var Li = '<li id = ' + _index + ' class="mui-sub-ul-li">' +
+									'<div class="mui-li-start-stop-location-time">' +
+									'<div class="mui-li-start-stop-location">' +
+									'<span>起点: 起始位置</span><br/>' +
+									'<span>终点: 结束位置</span>' +
+									'</div>' +
+									'<div class="mui-li-start-stop-time">' +
+									'<span><p id="start-location" class="mui-icon mui-icon-location"></p> ' + startTime + '</span><br/>' +
+									'<span><p id="stop-location" class="mui-icon mui-icon-location" ></p> ' + endTime + '</span>' +
+									'</div>' +
+									'</div>' +
+									'<span class="mui-mileage-time">共' + distance + '公里/' + (duration / 60) + '分钟</span>' +
+									'<div class="mui-avg-speed-box">' +
+									'<div class="mui-all-left-box">' +
+									'<span>百公里油耗: </span><span id="single-mileage">' + parseFloat(fuel / distance * 100).toFixed(1) + 'L</span><br/>' +
+									'<span>平均速度: </span><span id="single-kilometers">' + parseFloat(distance / (duration / 3600)).toFixed(1) + 'km/h</span>' +
+									'</div>' +
+									'<div class="mui-all-right-box">' +
+									'<span>油耗: </span><span id="single-oil-wear">' + parseFloat(fuel).toFixed(1) + 'L</span><br/>' +
+									//<!--<span>花费: </span><span id="single-spend">24.2元</span>-->
+									'</div>' +
+									'</div>' +
+									'<div class="li-bottom-right-box">' +
+									'<span id='+share+' class="mui-icon iconfont icon-fenxiang"></span>' +
+									'<span id='+locations+' class="mui-icon mui-icon-location"></span>' +
+									'<span id='+more+' class="mui-icon mui-icon-more"></span>' +
+									'</div>' +
+									'</li>';
+								li.innerHTML = Li;
+								document.getElementById('vehicle-travle-list').appendChild(li);
+								var shares = document.getElementById(share);
+								shares.addEventListener('tap', function(event) {
+									plus.share.sendWithSystem({
+										content: '分享内容',
+										href: 'http://www.dcloud.io/'
+									}, function() {
+										console.log('分享成功');
+									}, function(e) {
+										console.log('分享失败：' + JSON.stringify(e));
+									});
+								});
+								var strockMapPage = mui.preload({
+									'id': 'vehicle-strock-map',
+									'url': 'vehicle-strock-map.html'
+								});
+								var locationss = document.getElementById(locations);
+								locationss.addEventListener('tap', function(event) {
+									var _index = event.target.id.slice('locations'.length,event.target.id.length);
+									mui.fire(strockMapPage, 'refreshStrockMap',{
+								    		startDates : new Date(tld[_index].startTime).format('yyyy-MM-dd hh:mm:ss'),
+								    		endDates : new Date(tld[_index].endTime).format('yyyy-MM-dd hh:mm:ss'),
+								    		fuels : tld[_index].fuel,
+								    		startLats : tld[_index].startLat,
+											startLons : tld[_index].startLon,
+											endLons : tld[_index].endLon,
+											endLats : tld[_index].endLat,
+											avgSpeeds : avgSpeed[_index],
+											oilKMs : oilKM[_index],
+											vehicles : currentVehicle,
+											distances : tld[_index].distance,
+											durations : tld[_index].duration/60
+								    		});
+									strockMapPage.show('pop-in');
+								});
+								var mores = document.getElementById(more);
+								mores.addEventListener('tap', function(event) {
+									plus.nativeUI.actionSheet({
+										title: "更多",
+										cancel: "取消",
+										buttons: [{
+											title: "收藏终点"
+										}, {
+											title: "删除行程"
+										}, {
+											title: "重命名"
+										}, {
+											title: "实际油耗"
+										}]
+									}, function(e) {
+										console.log("User pressed: " + e.index);
+									});
+								});
+							}
+							totalMileage.innerHTML = parseFloat(distanceTotal).toFixed(1)+'KM';
+							totalOilWear.innerHTML = parseFloat(fuelTotal).toFixed(1)+'L';
+							totalOilKM.innerHTML = distanceTotal > 0 ? parseFloat(fuelTotal / distanceTotal * 100).toFixed(1)+'L' : '0.0L';
+						}else{
+							totalMileage.innerHTML = '0.0KM';
+							totalOilWear.innerHTML = '0.0L';
+							totalOilKM.innerHTML = '0.0L';
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+
+</html>

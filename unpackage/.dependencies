@@ -1,0 +1,14 @@
+{
+  "service-list.html": {
+    "href": "service-list.html",
+    "resources": [],
+    "refer": [],
+    "priority": 4
+  },
+  "tab-webview-main.html": {
+    "href": "tab-webview-main.html",
+    "resources": [],
+    "refer": [],
+    "priority": 0
+  }
+}
