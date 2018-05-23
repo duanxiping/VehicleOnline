@@ -775,6 +775,43 @@ bmap.prototype.addTrackLine = function (vehicle, gps_datas, color, width, center
     }
 };
 
+bmap.prototype.addTripTrackLine = function (gps_datas, color, width, centerAndZoom) {
+    var points = [];
+    var latLng;
+    var stopPoint;
+	var startPoint;
+    for (var i = 0; i < gps_datas.length; i++) {
+        latLng = new BMap.Point(gps_datas[i].lon, gps_datas[i].lat);
+        stopPoint = new BMap.Point(gps_datas[i].lon, gps_datas[i].lat);
+        points.push(latLng);
+    }
+    startPoint = new BMap.Point(gps_datas[0].lon, gps_datas[0].lat);
+    //添加起点和终点的覆盖物
+	var starIcon = new BMap.Icon("img/icon_start.png", new BMap.Size(32, 32));
+	startMarker = new BMap.Marker(startPoint, {
+		icon: starIcon
+	});
+	var stopIcon = new BMap.Icon("img/icon_stop.png", new BMap.Size(32, 32));
+	stopMarker = new BMap.Marker(stopPoint, {
+		icon: stopIcon
+	});
+	this.map.addOverlay(startMarker);
+	this.map.addOverlay(stopMarker);
+    var polyOptions = {
+        strokeColor: color,
+        strokeOpacity: 0.5,
+        strokeWeight: width
+    };
+    tripLine = new BMap.Polyline(points, polyOptions);
+    this.map.addOverlay(tripLine);
+    if(centerAndZoom){
+    		var vp = this.map.getViewport(points, {
+    			margins: [10, 10, 10, 10]
+    		});
+    		this.map.centerAndZoom(vp.center, vp.zoom);
+    }
+};
+
 bmap.prototype.addAllTrackLine = function (vehicle, all_gps_datas, color, width) {
     var v = this.vehicles[vehicle.obj_id];
     var content = "";

@@ -106,14 +106,14 @@
 					oilTotal.innerHTML = event.detail.fuelTotals;
 					var dataLength = event.detail.dataLengths;
 					var day = event.detail.dayTimes;
-					console.log('时间天：'+day);
-					console.log('时间月：'+event.detail.monthTimes);
+//					console.log('时间天：'+day);
+//					console.log('时间月：'+event.detail.monthTimes);
 					var distanceDay = event.detail.distanceDays;
 					var fuelDay = event.detail.fuelDays;
 					var avgOilDay = event.detail.avgOilDays;
 					var ul = document.getElementById('vehicle-oil-list');
 					ul.innerHTML = '';
-					for(var i = 0; i < dataLength; i++){
+					for(var i = dataLength-1; i > 0; i--){
 						var li = document.createElement('li');
 						var _index = i;
 						var Li = '<li id = '+_index+' class="mui-detail-li">'+
@@ -122,7 +122,7 @@
 										'<span>行驶<span id="mileage" class="mui-span-data">'+distanceDay[i]+'</span>km</span><br />'+
 										'<span>平均油耗<span id="avg-mileage" class="mui-span-data">'+avgOilDay[i]+'</span>L/100km</span>'+
 									'</div>'+
-									'<span class="mui-detail-spend mui-span-data">油耗'+fuelDay[i]+'L</span>'+
+									'<span class="mui-detail-spend mui-span-data">'+fuelDay[i]+'L</span>'+
 								'</li>';
 						li.innerHTML = Li; 
 						ul.appendChild(li);

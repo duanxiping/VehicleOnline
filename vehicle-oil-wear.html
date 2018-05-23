@@ -21,7 +21,6 @@
 				box-shadow: 0 0 0!important;
 			}
 			#content{
-			
 				position: relative;
 			}
 			.mui-nav-time{
@@ -162,43 +161,31 @@
        			text-align: center;
        		}
        		#oil-area-basic{
-       			width: 370px;
-       			height: 340px;
+       			width: 100%;
+       			height: 330px;
        			margin: 0 auto;
        			padding: 10px;
-       			margin-top: -55px;
+       			/*margin-top: -55px;*/
        		}
        		#container{
-       			height: 450px; 
-       			width: 450px; 
+       			height: 340px; 
+       			width: 100%; 
        			margin: 0 auto; 
        			padding: 0; 
        			/*margin-top: -10px;*/
        		}
-       		/*.mui-pie-show-data{
+       		.mui-pie-show-data{
        			width:100%;
        			margin:0 auto;
-       			position:absolute;
-       			bottom: 85px;
-       		}*/
-       		/*.mui-pie-span{
+       			margin-bottom: 10px;
+       		}
+       		.mui-pie-span{
        			font-size: 18px;
        			color: #466eb0;
        			font-weight: 400;
        			display: block;
        			text-align: center;
-       		}*/
-       		/*.mui-oil-bottom-title{
-       			width: 100%;
-       			height: 48px;
-       			color: white;
-       			font-size:23px;
-       			background-color: #466eb0;
-       			bottom: 0;
-       			position: fixed;
-       			text-align: center;
-       			line-height: 50px;
-       		}*/
+       		}
 		</style>
 	</head>
 
@@ -247,11 +234,11 @@
 				</div>
 				<span class="mui-pie-title" id="pie-title">百公里平均油耗图</span>
 				<div id="container"></div>
-				<!--<div class="mui-pie-show-data">
-					<span class="mui-pie-span">经济时速(60-90km)</span>
-					<span class="mui-pie-span">平均油耗: 6.6L/100km</span>
-					<span class="mui-pie-span">油耗: 23.2L</span>
-				</div>-->
+				<div class="mui-pie-show-data">
+					<span id="pie-km" class="mui-pie-span"></span>
+					<span id="pie-avg-oil" class="mui-pie-span"></span>
+					<span id="pie-oil" class="mui-pie-span"></span>
+				</div>
 				<!--<div class="mui-oil-bottom-title">油耗排行榜</div>-->
 		</div>
 		<script src="js/mui.min.js"></script>
@@ -269,6 +256,9 @@
 				var totalOilWear = document.getElementById('total-oil-wear');
 				var totalMileage = document.getElementById('total-mileage');
 				var avgMileage = document.getElementById('avg-mileage');
+				var pieKm = document.getElementById('pie-km');
+				var pieAvgOil = document.getElementById('pie-avg-oil');
+				var pieOil = document.getElementById('pie-oil');
 				var day = document.getElementById('day');
 //				var week = document.getElementById('week');
 				var month = document.getElementById('month');
@@ -355,7 +345,7 @@
 					dateBox.innerHTML = dates == dateD.format("yyyy-MM-dd") ? '今天': dates;
 					NextButton.style.display = selectD >= dateD ? 'none':'block';
 					vehicleOilDatas(dates, mode);
-					console.log('日。。。。。。。。。。。。。。。。。。');
+//					console.log('日。。。。。。。。。。。。。。。。。。');
 				}
 				//月的时间显示函数
 				var monthDate = function(date, mode){
@@ -364,7 +354,7 @@
 					dateBox.innerHTML = dates;	
 					NextButton.style.display = selectM >= dateM ? 'none':'block';
 					vehicleOilDatas(dates, mode, nextMonth);
-					console.log('月。。。。。。。。。。。。。。。。。。');
+//					console.log('月。。。。。。。。。。。。。。。。。。');
 				}
 				//获取车辆油耗数据
 				var vehicleOilDatas = function(dates, mode, nextMonth){
@@ -490,22 +480,25 @@
 					    });
 					    var oilDetailBtn = document.getElementById('oil-detail');
 					    oilDetailBtn.addEventListener('tap', function(event){
-					    	mui.fire(oilDetailPage, 'refreshOilDetail',{
-					    		dataLengths : od.length,
-					    		fuelTotals : fuelTotal,
-					    		avgOilDays : avgOilDay,
-					    		dayTimes : dayTime,
-					    		monthTimes : monthTime,
-					    		distanceDays : distanceDay,
-					    		fuelDays : fuelDay});
-					    	oilDetailPage.show('pop-in');
+					    		if(mode == 2){
+					    			mui.fire(oilDetailPage, 'refreshOilDetail',{
+							    		dataLengths : od.length,
+							    		fuelTotals : fuelTotal,
+							    		avgOilDays : avgOilDay,
+							    		dayTimes : dayTime,
+							    		monthTimes : monthTime,
+							    		distanceDays : distanceDay,
+							    		fuelDays : fuelDay
+					    			});
+					    			oilDetailPage.show('pop-in');
+					    		}
+					    	
 					    });
 					}else{
 						totalMileage.innerHTML = '0.0';
 						totalOilWear.innerHTML = '0.0';
 						avgMileage.innerHTML = '0.0';
 						oilWearPie();
-						console.log('没有数据。。。。。。。。。。。。。。。。')
 					}
 				}
 				//曲线图信息
@@ -549,42 +542,48 @@
 				}
 				//饼状图信息
 				var oilWearPie = function(s0, s1, s2, s3, s4, ao1, ao2, ao3, ao4, idl){
-					console.log('油耗========================'+s1);
 				    var oilPie = document.getElementById("container");
 					var myPieChart = echarts.init(oilPie);
 					optionPie = null;
 					optionPie = {
 					    tooltip : {
 					        trigger: 'item',
-					        formatter: "{a} {c} L<br/>{b}"
+					        formatter: "{a} {c} L",
+					        triggerOn: 'click',
+							position: function(point, params, dom, rect, size) {
+//								console.log('饼状图的数据是============='+JSON.stringify(params));
+								pieKm.innerHTML = '';
+								pieAvgOil.innerHTML = '';
+								pieOil.innerHTML = '';
+								var ao = [ao1, ao2, ao3, ao4, idl];
+								var section = ['(0-30km)', '(30-60km)', '(60-90km)', '( > 90km)', ''];
+								var unit = params.dataIndex == 4 ? 'L/hr' : 'L/100km';
+									pieKm.innerHTML = params.name + section[params.dataIndex];
+									pieAvgOil.innerHTML = '平均油耗 :'+ao[params.dataIndex]+ unit;
+									pieOil.innerHTML = params.seriesName + params.data.value+'L';
+							},
 					    },
 					    series : [
 					        {
-					            name: '油耗量:',
+					            name: '油耗量 :',
 					            type: 'pie',
-					            radius : '55%',
-					            center: ['40%', '35%'],
+					            radius: [0, '82%'],
 					            data:[
-					                {value:s1, name:'平均油耗:'+ ao1 +'L/100km'+';低速(0-30km)'},
-					                {value:s2, name:'平均油耗:'+ ao2 +'L/100km'+';中速(30-60km)'},
-					                {value:s3, name:'平均油耗:'+ ao3 +'L/100km'+';经济时速(60-90km)'},
-					                {value:s4, name:'平均油耗:'+ ao4 +'L/100km'+';高速(>90km)'},
-					                {value:s0, name:'平均油耗:'+ idl +'L/hr'+';怠速'}
-						            ],labelLine: {
-							            normal: {
-							                show: false
-							            }
-						        },label: {
+					                {value:s1, name:'低速'},
+					                {value:s2, name:'中速'},
+					                {value:s3, name:'经济时速'},
+					                {value:s4, name:'高速'},
+					                {value:s0, name:'怠速'}
+						            ],
+						        labelLine: {
 							        normal: {
-							            show: false,
-							        },
-						            emphasis: {
-						                show: false,
-						                textStyle: {
-					                    	fontSize: '30',
-					                    	fontWeight: 'bold'
-					                    }
-					                }
+							           position: 'inner'
+							        }
+						        },
+						        label: {
+							        normal: {
+							            position: 'inner'
+							        }
 					            },
 					        }
 					    ]

@@ -285,19 +285,19 @@
 						if(travelData.data) {
 							console.log(JSON.stringify(travelData));
 							var tld = travelData.data;
-							var distance = 0;
-							var distanceTotal = 0;
-							var fuel = 0;
-							var fuelTotal = 0;
-							var duration = 0;
-							var startTime = 0;
-							var startLat = 0;
-							var startLon = 0;
-							var endTime = 0;
-							var endLon = 0;
-							var endLat = 0;
-							var avgSpeed = [];
-							var oilKM = [];
+							var distance = 0;//区间行程
+							var distanceTotal = 0;//总里程
+							var fuel = 0;//区间油耗
+							var fuelTotal = 0;//总油耗
+							var duration = 0;//时间
+							var startTime = 0;//起始时间
+							var startLat = 0;//其实纬度
+							var startLon = 0;//其实经度
+							var endTime = 0;//结束时间
+							var endLon = 0;//结束经度
+							var endLat = 0;//结束纬度
+							var avgSpeed = [];//平均速度
+							var oilKM = [];//百公里油耗
 							var ul = document.getElementById('vehicle-travle-list');
 							ul.innerHTML = '';
 							for(var i = 0; i < tld.length; i++) {

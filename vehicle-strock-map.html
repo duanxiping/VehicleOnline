@@ -11,6 +11,11 @@
 		<link href="css/style.css" rel="stylesheet" />
 		<link href="http://api.map.baidu.com/library/TrafficControl/1.4/src/TrafficControl_min.css" rel="stylesheet" type="text/css" />
 		<style>
+			html,body{
+				padding: 0;
+				margin: 0;
+				height: 100%;
+			}
 			header {
 				background-color: #FFFFFF!important;
 				box-shadow: 0 0 0!important;
@@ -71,7 +76,7 @@
 			}
 			
 			.mui-container-map {
-				height: 500px;
+				/*height: 500px;*/
 				width: 100%;
 				text-align: center;
 				font-size: 14px;
@@ -139,55 +144,63 @@
 			var totalKM = document.getElementById('total-km');
 			var gpsDatas = null;
 			var wimap;
+			var currentVehicle = app.getCurrentVehicle();
+			var cp = currentVehicle ? currentVehicle.point || {lon:106.738008, lat:26.604711}: {lon:106.738008, lat:26.604711};
+//			var addr = document.getElementById('location');
+			var height = window.innerHeight - 210 +'px'
+			var width = window.innerWidth;
+			var opt =  {
+		    		traffic: true,
+		    		panorama: true,
+		    		trace: false,
+		    		myPos: true,
+		    		refresh: true,
+		    		lock: {show: false, stat: false},
+		    		stand: {show: false, stat: false}
+		    }
+			var div_map = document.getElementById('container');
+			var panorama_map = 'panorama';
+			wimap = new wiseMap(MAP_TYPE_BAIDU, div_map, cp, 15, opt, panorama_map);
+			//初始化地图
+			var initMap = function(){
+				var t = document.getElementById('container');
+				t.style.height = height;
+				t.style.width = width;
+			};
+			initMap();
+			//刷新页面信息
 			window.addEventListener('refreshStrockMap', function(event) {
 				var startTimes = new Date(event.detail.startDates).format('hh:mm');
 				var endTime = new Date(event.detail.endDates).format('hh:mm');
-				startTime.innerHTML = startTimes;
-				stopTime.innerHTML = endTime;
-				totalKM.innerHTML = event.detail.distances;
-				totalMin.innerHTML = event.detail.durations;
-				oilKM.innerHTML = event.detail.oilKMs + 'L';
-				avgSpeed.innerHTML = event.detail.avgSpeeds + 'km/h';
-				fuel.innerHTML = parseFloat(event.detail.fuels).toFixed(1) + 'L';
+				startTime.innerHTML = startTimes;//起点时间
+				stopTime.innerHTML = endTime;//终点时间
+				totalKM.innerHTML = event.detail.distances;//总里程
+				totalMin.innerHTML = event.detail.durations;//总时间
+				oilKM.innerHTML = event.detail.oilKMs + 'L';//百公里油耗
+				avgSpeed.innerHTML = event.detail.avgSpeeds + 'km/h';//平均速度
+				fuel.innerHTML = parseFloat(event.detail.fuels).toFixed(1) + 'L';//油耗
 				var startLat = event.detail.startLats;
 				var startLon = event.detail.startLons;
 				var endLat = event.detail.endLats;
 				var endLon = event.detail.endLons;
-				var currentVehicle = event.detail.vehicles;
+				currentVehicle = event.detail.vehicles;
 				var mapHeight = document.getElementById('container');
-				app.listGpsData(currentVehicle.id, event.detail.startDates, event.detail.endDates, function(datas) {
-					//百度地图API功能
-					var map = new BMap.Map("container"); // 创建Map实例
-					map.centerAndZoom(new BMap.Point(startLon, startLat), 15); // 初始化地图,设置中心点坐标和地图级别
-					map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-					var sy = new BMap.Symbol(BMap_Symbol_SHAPE_BACKWARD_OPEN_ARROW, {
-						scale: 0.6, //图标缩放大小
-						strokeColor: '#fff', //设置矢量图标的线填充颜色
-						strokeWeight: '3', //设置线宽
-					});
-					var icons = new BMap.IconSequence(sy, '10', '30');
-					var pois = [];
-					var stopPoint;
-					for(var i = 0; i < datas.data.length; i++){
-						pois[i] = new BMap.Point(datas.data[i].lon, datas.data[i].lat);
-						stopPoint = new BMap.Point(datas.data[i].lon, datas.data[i].lat);
+				plus.nativeUI.showWaiting('正在加载，请耐心等候...');
+				// 画轨迹线
+				var vehicle = {
+					obj_id: currentVehicle.id
+				};
+				// 删除之前的轨迹
+				wimap.removeTrackLine(vehicle);
+				app.listGpsData(currentVehicle.id, event.detail.startDates, event.detail.endDates, function(obj) {
+					if(obj.status_code == 0 && obj.total > 0){
+						gpsDatas = obj.data;
+						// 画新的轨迹
+						wimap.addTripTrackLine(gpsDatas, '#0000FF', 4, true);
+					}else{
+						plus.nativeUI.toast('车辆无行驶数据');
 					}
-					//添加起点和终点的覆盖物
-					var startPoint = new BMap.Point(datas.data[0].lon, datas.data[0].lat);
-					var starIcon = new BMap.Icon("img/icon_start.png", new BMap.Size(32, 32));
-					startMarker = new BMap.Marker(startPoint, {icon: starIcon});
-					var stopIcon = new BMap.Icon("img/icon_stop.png", new BMap.Size(32, 32));
-					stopMarker = new BMap.Marker(stopPoint, {icon: stopIcon});
-					map.addOverlay(startMarker);
-					map.addOverlay(stopMarker); 
-					var polyline = new BMap.Polyline(pois, {
-						enableEditing: false, //是否启用线编辑，默认为false
-						enableClicking: true, //是否响应点击事件，默认为true
-						strokeWeight: '2', //折线的宽度，以像素为单位
-						strokeOpacity: 0.8, //折线的透明度，取值范围0 - 1
-						strokeColor: "#0000FF" //折线颜色
-					});
-					map.addOverlay(polyline); //增加折线
+					plus.nativeUI.closeWaiting();
 				});
 			});
 		</script>
