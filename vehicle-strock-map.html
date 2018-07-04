@@ -26,6 +26,7 @@
 				width: 100%;
 				height: 166px;
 				background-color: #FFFFFF!important;
+				font-size: 14px;
 			}
 			
 			.mui-start-stop-box {
@@ -39,6 +40,16 @@
 			.mui-sub-left-inline {
 				display: inline-block;
 				float: left;
+			}
+			
+			.mui-describ-address{
+				width: 266px;
+				height: 22px;
+				padding: 0;
+				display: block;
+				overflow:hidden;
+				white-space:nowrap;
+				text-overflow:ellipsis
 			}
 			
 			.mui-sub-right-inline {
@@ -94,8 +105,8 @@
 			<div class="mui-sub-box">
 				<div class="mui-start-stop-box">
 					<div class="mui-sub-left-inline">
-						<span>起点: 起始位置</span><br/>
-						<span>终点: 结束位置</span>
+						<span class="mui-describ-address">起点: <span id="start-address"></span></span>
+						<span class="mui-describ-address">终点: <span id="end-address"></span></span>
 					</div>
 					<div class="mui-sub-right-inline">
 						<span id="start-time">00:00</span><br/>
@@ -129,10 +140,6 @@
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=647127add68dd0a3ed1051fd68e78900"></script>
 		<script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
 		<script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
-		<script src="js/mapjs/define.js" type="text/javascript"></script>
-		<script src="js/mapjs/bmap.js" type="text/javascript"></script>
-		<script src="js/mapjs/global.js" type="text/javascript"></script>
-		<script src="js/mapjs/wisemap.js" type="text/javascript"></script>
 		<script>
 			mui.init();
 			var startTime = document.getElementById('start-time');
@@ -142,32 +149,18 @@
 			var fuel = document.getElementById('fuel');
 			var totalMin = document.getElementById('total-min');
 			var totalKM = document.getElementById('total-km');
+			var startAddre = document.getElementById('start-address');
+			var endAddre = document.getElementById('end-address');
 			var gpsDatas = null;
-			var wimap;
+			var startMarker;
+			var stopMarker;
+			var tripLine;
 			var currentVehicle = app.getCurrentVehicle();
-			var cp = currentVehicle ? currentVehicle.point || {lon:106.738008, lat:26.604711}: {lon:106.738008, lat:26.604711};
-//			var addr = document.getElementById('location');
-			var height = window.innerHeight - 210 +'px'
-			var width = window.innerWidth;
-			var opt =  {
-		    		traffic: true,
-		    		panorama: true,
-		    		trace: false,
-		    		myPos: true,
-		    		refresh: true,
-		    		lock: {show: false, stat: false},
-		    		stand: {show: false, stat: false}
-		    }
+			var	cp = currentVehicle ? currentVehicle.point || {lon:106.738008, lat:26.604711}: {lon:106.738008, lat:26.604711};
 			var div_map = document.getElementById('container');
-			var panorama_map = 'panorama';
-			wimap = new wiseMap(MAP_TYPE_BAIDU, div_map, cp, 15, opt, panorama_map);
-			//初始化地图
-			var initMap = function(){
-				var t = document.getElementById('container');
-				t.style.height = height;
-				t.style.width = width;
-			};
-			initMap();
+			div_map.style.height = window.innerHeight - 210 +'px'
+			div_map.style.width = window.innerWidth;
+			var	map = new BMap.Map('container');
 			//刷新页面信息
 			window.addEventListener('refreshStrockMap', function(event) {
 				var startTimes = new Date(event.detail.startDates).format('hh:mm');
@@ -179,30 +172,61 @@
 				oilKM.innerHTML = event.detail.oilKMs + 'L';//百公里油耗
 				avgSpeed.innerHTML = event.detail.avgSpeeds + 'km/h';//平均速度
 				fuel.innerHTML = parseFloat(event.detail.fuels).toFixed(1) + 'L';//油耗
-				var startLat = event.detail.startLats;
-				var startLon = event.detail.startLons;
-				var endLat = event.detail.endLats;
-				var endLon = event.detail.endLons;
+//				var startLat = event.detail.startLats;
+//				var startLon = event.detail.startLons;
+//				var endLat = event.detail.endLats;
+//				var endLon = event.detail.endLons;
 				currentVehicle = event.detail.vehicles;
-				var mapHeight = document.getElementById('container');
 				plus.nativeUI.showWaiting('正在加载，请耐心等候...');
-				// 画轨迹线
-				var vehicle = {
-					obj_id: currentVehicle.id
-				};
-				// 删除之前的轨迹
-				wimap.removeTrackLine(vehicle);
+				startAddre.innerHTML = event.detail.startAddress;
+				endAddre.innerHTML = event.detail.endAddress;
+//				if(startMarker || stopMarker || tripLine){
+//					map.removeOverlay(startMarker);
+//					map.removeOverlay(stopMarker);
+//					map.removeOverlay(tripLine);
+//				}
+				map.clearOverlays();
 				app.listGpsData(currentVehicle.id, event.detail.startDates, event.detail.endDates, function(obj) {
 					if(obj.status_code == 0 && obj.total > 0){
 						gpsDatas = obj.data;
-						// 画新的轨迹
-						wimap.addTripTrackLine(gpsDatas, '#0000FF', 4, true);
+						addTripTrackLine(gpsDatas, '#0000FF', 4, true);
 					}else{
-						plus.nativeUI.toast('车辆无行驶数据');
+						plus.nativeUI.toast('车辆无行驶轨迹数据');
 					}
 					plus.nativeUI.closeWaiting();
 				});
 			});
+			var addTripTrackLine = function(gps_datas, color, width, centerAndZoom) {
+				var points = [];
+				var latLng;
+				var stopPoint;
+				var startPoint;
+				for(var i = 0; i < gps_datas.length; i++) {
+					latLng = new BMap.Point(gps_datas[i].lon, gps_datas[i].lat);
+					stopPoint = new BMap.Point(gps_datas[i].lon, gps_datas[i].lat);
+					points.push(latLng);
+				}
+				startPoint = new BMap.Point(gps_datas[0].lon, gps_datas[0].lat);
+				//添加起点和终点的覆盖物
+				var starIcon = new BMap.Icon("img/icon_start.png", new BMap.Size(32, 32));
+				startMarker = new BMap.Marker(startPoint, {
+					icon: starIcon
+				}); 
+				var stopIcon = new BMap.Icon("img/icon_stop.png", new BMap.Size(32, 32));
+				stopMarker = new BMap.Marker(stopPoint, {
+					icon: stopIcon
+				});
+				map.addOverlay(startMarker);
+				map.addOverlay(stopMarker);
+				var polyOptions = {
+					strokeColor: color,
+					strokeOpacity: 0.5,
+					strokeWeight: width
+				};
+				tripLine = new BMap.Polyline(points, polyOptions);
+				map.centerAndZoom(startPoint, 15);
+				map.addOverlay(tripLine);
+			};
 		</script>
 	</body>
 

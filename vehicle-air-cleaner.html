@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/icons-extra.css" rel="stylesheet" />
+		<link href="css/iconfont.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			header {
+				background-color: #FFFFFF!important;
+				box-shadow: 0 0 0!important;
+			}
+			
+			html,
+			body {
+				background-color: white;
+				overflow: hidden;
+			}
+			
+			.mui-content {
+				background-color: white;
+			}
+			
+			.mui-purifier {
+				width: 100%;
+				height: 60px;
+				font-size: 20px;
+				margin-left: 10px;
+				padding: 10px;
+				border-bottom: 1px solid #DADADA;
+			}
+			
+			#purifier {
+				line-height: 40px;
+				float: left;
+			}
+			
+			#down {
+				width: 20px;
+				height: 20px;
+				margin-left: 10px;
+				float: right;
+				margin-right: 20px;
+				margin-top: 10px;
+			}
+			
+			.mui-ico-air {
+				width: 40px;
+				height: 40px;
+				margin-left: 10px;
+			}
+			
+			#mode {
+				width: 70px;
+				height: auto;
+				text-align: center;
+				display: block;
+				margin: 0 auto;
+				margin-top: 20px;
+			}
+			
+			#air-speed-explain {
+				width: 50px;
+				height: auto;
+				text-align: center;
+				display: block;
+				margin: 0 auto;
+				margin-top: 0px;
+			}
+			
+			#container {
+				width: 210px;
+				height: 210px;
+				margin: 0 auto;
+			}
+			
+			#circle {
+				margin-left: 10px;
+				background-color: white;
+			}
+			
+			.mui-city {
+				width: 100%;
+				height: 40px;
+				margin-top: 20px;
+				margin-left: 10px;
+				padding: 10px;
+				border-top: 1px solid #DADADA;
+				border-bottom: 1px solid #DADADA;
+				position: relative;
+			}
+			
+			#air-quality {
+				color: #4EEB3D;
+			}
+			
+			#city {
+				position: absolute;
+				right: 30px;
+				top: 10px;
+			}
+			
+			#device-status {
+				position: absolute;
+				right: 20px;
+				top: 10px;
+			}
+			
+			ul {
+				width: 100%;
+				height: 90px;
+				margin: 0 auto;
+				list-style-type: none;
+				padding: 10px;
+				border-bottom: 1px solid #DADADA;
+			}
+			
+			li {
+				width: 25%;
+				height: 60px;
+				text-align: center;
+				display: inline-block;
+				float: left;
+			}
+			
+			img {
+				width: 45px;
+				height: 45px;
+			}
+			
+			#air-area-basic {
+				width: 100%;
+				height: 330px;
+				margin: 0 auto;
+				margin-top: 20px;
+				padding: 10px;
+			}
+			
+			.mui-light {
+				height: 15px;
+				width: 45px;
+				margin: 10px;
+				font-size: 13px;
+				color: #8F8F94;
+				position: relative;
+				display: block;
+			}
+			
+			.light {
+				height: 15px;
+				width: 15px;
+			}
+			
+			#on-text {
+				display: block;
+				position: absolute;
+				top: -2px;
+				right: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="bind" class="mui-icon iconfont icon-baojing icon-cheliangbangding mui-pull-right mui-hidden"></a>
+			<h1 id="title" class="mui-title">空气净化</h1>
+		</header>
+
+		<div id="content" class="mui-content">
+			<span class="mui-pull-left">
+				<span class="mui-light"><img class="light" id="online" src="images/redStatus.png"><span id="on-text">离线</span></span>
+			</span>
+			<p id="mode"></p>
+			<div id="container">
+				<canvas id="circle"></canvas>
+			</div>
+			<p id="air-speed-explain"></p>
+			<div class="mui-city"><span>空气质量: <span id="air-quality"></span></span>
+				<p id="city">城市</p>
+			</div>
+			<ul>
+				<li><img id="power-on-off" src="images/ico_air_power_off.png" />
+					<p>开关</p>
+				</li>
+				<li><img id="auto-mode" src="images/ico_air_auto_off.png" />
+					<p>模式</p>
+				</li>
+				<li><img id="air-speed" src="images/ico_air_level_off.png" />
+					<p>调速</p>
+				</li>
+				<li><img id="air-cleaner-set" src="images/ico_air_setting_off.png" />
+					<p>设置</p>
+				</li>
+			</ul>
+			<div id="air-area-basic"></div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/wistorm/define.js"></script>
+		<script src="js/wistorm/wistorm.js"></script>
+		<script src="js/wistorm/md5.js"></script>
+		<script src="js/wistorm/define.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/immersed.js"></script>
+		<script src="js/echarts.js"></script>
+		<script src="js/mapjs/global.js" type="text/javascript"></script>
+		<script type="text/javascript" src="js/canva/air-cleaner-circle.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=647127add68dd0a3ed1051fd68e78900"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+		<script>
+			mui.plusReady(function() {
+				var title = document.getElementById('title');
+				var online = document.getElementById('online');
+				var ontext = document.getElementById('on-text');
+				var powerOnOff = document.getElementById('power-on-off');
+				var autoMode = document.getElementById('auto-mode');
+				var modeBox = document.getElementById('mode');
+				var airSpeed = document.getElementById('air-speed');
+				var airSpeedExplain = document.getElementById('air-speed-explain');
+				var cityBox = document.getElementById('city');
+				var currentVehicle;
+				var Canvas = document.getElementById('circle');
+				var context = Canvas.getContext('2d');
+				var widthCanvas = 200; //设置画布的宽度 
+				var heightCanvas = 200; //设置画布的高度
+				var intervalId;
+				var qualityNum = '00';
+				var carAirQuality = '车内空气优';
+				var rotateTime = 0; //旋转时间
+				var isOpen = true; //开关状态
+				var isAuto = true; //模式状态
+				var speedNum = 2; //调速状态
+				var countTimeDown = 0; //初始化预热时间
+				var startDownTime; //预热时间函数
+				var firstOpenFlag = 0;
+				var intervalometer;
+				var speed;
+
+				//初始化刷新
+				window.addEventListener('airDeviceRefresh', function(event) {
+					currentVehicle = app.getCurrentVehicle();
+					title.innerHTML = currentVehicle ? currentVehicle.name : "空气净化";
+					initCanvas(Canvas, context, widthCanvas, heightCanvas, rotateTime, qualityNum, carAirQuality); //调用画布设置函数
+					if(currentVehicle) {
+						app.getDevice(currentVehicle.id, function(data) {
+							if(data && data.activeGpsData) {
+								var lon = data.activeGpsData.lon;
+								var lat = data.activeGpsData.lat;
+								var point = new BMap.Point(lon, lat); // 创建坐标点
+								// 根据坐标得到地址描述
+								var myGeo = new BMap.Geocoder();
+								myGeo.getLocation(point, function(result) {
+									if(result) {
+										var city = result.addressComponents.city;
+										var citys = city.slice(0, -1);
+										if(citys) {
+											getCityQuality(citys, function(dataCity) {
+												if(dataCity[0]) {
+													document.getElementById('air-quality').innerHTML = dataCity[0].quality;
+												}
+											});
+										}
+										cityBox.innerHTML = citys ? citys : "城市";
+									}
+								});
+							}
+						});
+					}
+					if(intervalometer) {
+						clearInterval(intervalometer);
+					}
+					intervalometer();
+				});
+				intervalometer = function() {
+					var intervalTimer = setInterval(function() {
+						deviceStatusRefresh();
+					}, 10000);
+				}
+				//刷新状态
+				var deviceStatusRefresh = function() {
+					currentVehicle = app.getCurrentVehicle();
+					if(currentVehicle) {
+						app.getDevice(currentVehicle.id, function(data) {
+							if(data && data.activeGpsData) {
+								//获取当前设备状态
+								online.src = getOnLine(data) ? 'images/greenStatus.png' : 'images/redStatus.png';
+								ontext.innerHTML = getOnLine(data) ? '在线' : '离线';
+								console.log('设备数据信息===========' + JSON.stringify(data));
+								if(getOnLine(data)) {
+									speed = data.activeGpsData.speed;
+									if(data.activeGpsData.status) {
+										var airStatus = data.activeGpsData.status;
+										console.log('设备的状态码是=============' + JSON.stringify(airStatus));
+										powerOnOff.src = airStatus.indexOf(IOT_STATUS.STATUS_AIR) > -1 ? 'images/ico_air_power_on.png' : 'images/ico_air_power_off.png';
+										console.log('设备的开关状=============' + (airStatus.indexOf(8206) > -1));
+										isOpen = airStatus.indexOf(IOT_STATUS.STATUS_AIR) > -1 ? false : true;
+										if(airStatus.indexOf(IOT_STATUS.STATUS_AIR) > -1) {
+											autoMode.src = airStatus.indexOf(IOT_STATUS.STATUS_AIR_MODE) ? 'images/ico_air_auto_off.png' : 'images/ico_air_auto_on.png';
+											console.log('设备的模式状=============' + (airStatus.indexOf(IOT_STATUS.STATUS_AIR_MODE) > -1));
+											modeBox.innerHTML = airStatus.indexOf(IOT_STATUS.STATUS_AIR_MODE) > -1 ? "手动模式" : "自动模式";
+											isAuto = airStatus.indexOf(IOT_STATUS.STATUS_AIR_MODE) ? true : false;
+											console.log('设备的调速状1=============' + (airStatus.indexOf(IOT_STATUS.STATUS_AIR_SPEED1) > -1));
+											console.log('设备的调速状2=============' + (airStatus.indexOf(IOT_STATUS.STATUS_AIR_SPEED2) > -1));
+											console.log('设备的调速状3=============' + (airStatus.indexOf(IOT_STATUS.STATUS_AIR_SPEED3) > -1));
+											if(airStatus.indexOf(IOT_STATUS.STATUS_AIR_SPEED1) > -1) {
+												airSpeed.src = 'images/ico_air_level_on.png';
+												rotateTime = 50;
+												startRotate(rotateTime);
+												airSpeedExplain.innerHTML = '低速';
+												speedNum = 2;
+											} else if(airStatus.indexOf(IOT_STATUS.STATUS_AIR_SPEED2) > -1) {
+												airSpeed.src = 'images/ico_air_level_on_2.png';
+												rotateTime = 30;
+												startRotate(rotateTime);
+												airSpeedExplain.innerHTML = '中速';
+												speedNum = 3;
+											} else if(airStatus.indexOf(IOT_STATUS.STATUS_AIR_SPEED3) > -1) {
+												airSpeed.src = 'images/ico_air_level_on_3.png';
+												rotateTime = 20;
+												startRotate(rotateTime);
+												airSpeedExplain.innerHTML = '高速';
+												speedNum = 1;
+											} else {
+												airSpeed.src = 'images/ico_air_level_off.png';
+												rotateTime = 0;
+												startRotate(rotateTime);
+												airSpeedExplain.innerHTML = '停止';
+												speedNum = 2;
+											}
+										} else {
+											viewStatus();
+										}
+									} else {
+										viewStatus();
+									}
+								} else {
+									viewStatus();
+								}
+							}
+							console.log('设备状态' + getOnLine(data))
+						});
+						//曲线统计数据获取
+						app.listAirData(currentVehicle.id, function(obj) {
+							if(obj && obj.data) {
+								var airY = []
+								var timeX = [];
+								var airObj = [];
+								//过滤掉为负数的空气质量值
+								obj.data.map(function(track) {
+									if(track.air > 0) {
+										airObj.push(track);
+									}
+								})
+								for(var i = 0; i < airObj.length; i++) {
+									airY[i] = parseInt(airObj[i].air / 10);
+									timeX[i] = new Date(airObj[i].rcvTime).format('hh:mm');
+								}
+								airCleanerArea(timeX, airY);
+							}
+						});
+					}
+					//视图状态
+					var viewStatus = function() {
+						rotateTime = 0;
+						startRotate(rotateTime);
+						airSpeed.src = 'images/ico_air_level_off.png';
+						airSpeedExplain.innerHTML = '停止';
+						speedNum = 2;
+						autoMode.src = 'images/ico_air_auto_off.png';
+						powerOnOff.src = 'images/ico_air_power_off.png';
+						modeBox.innerHTML = "";
+						isAuto = true;
+						isOpen = true;
+					}
+				}
+
+				function startRotate(rotateTimes) {
+					if(currentVehicle) {
+						app.getDevice(currentVehicle.id, function(data) {
+							if(data.activeGpsData.air  > 0) {
+								qualityNum = parseInt(data.activeGpsData.air / 10);
+								if(qualityNum < 61) {
+									carAirQuality = '车内空气优';
+								} else if(qualityNum > 61 && qualityNum < 81) {
+									carAirQuality = '车内空气良';
+								} else if(qualityNum > 81 && qualityNum < 101) {
+									carAirQuality = '车内空气中';
+								} else if(qualityNum > 101 && qualityNum < 121) {
+									carAirQuality = '车内空气差';
+								}
+							}
+							initCanvas(Canvas, context, widthCanvas, heightCanvas, rotateTimes, qualityNum, carAirQuality); //调用画布设置函数
+						});
+					}
+				}
+				//绑定设备
+				var bindDevicePage = mui.preload({
+					'id': 'vehicle-bind-device',
+					'url': 'vehicle-bind-device.html'
+				});
+				var bindDeviceBtn = document.getElementById('bind');
+				bindDeviceBtn.addEventListener('tap', function(event) {
+					bindDevicePage.show('pop-in');
+				});
+				//开关净化器事件
+				powerOnOff.addEventListener('tap', function(event) {
+					if(speed > 5){
+						plus.nativeUI.toast('车辆启动时只能手动控制净化器！')
+					}else{
+						openCloseCommond();
+					}
+					
+				});
+				//自动模式事件
+				autoMode.addEventListener('tap', function(event) {
+					if(isOpen == false) {
+						autoModeCommond();
+					} else {
+						plus.nativeUI.toast('未打开设备，不能操作此功能！');
+					}
+				});
+				//空气净化调速事件
+				airSpeed.addEventListener('tap', function(event) {
+					console.log('开关状态------------'+isOpen);
+					if(countTimeDown == 0) {
+						if(isOpen == false) {
+							if(isAuto == true) {
+								airSpeedCommond();
+							} else {
+								plus.nativeUI.toast('手动模式才能操作此功能！');
+							}
+						} else {
+							plus.nativeUI.toast('设备未打开！');
+						}
+					} else {
+						plus.nativeUI.toast('开启2分钟之内为预热阶段不可调速，请2分钟之后再操作');
+					}
+
+				});
+				//净化器开
+				var openCloseCommond = function() {
+					var cmdType = IOT_CMD.VEHICLE_CONTORL;
+					var type = 0;
+					var remark = isOpen == true ? "开启净化器" : "关闭净化器";
+					var showWaiting = isOpen == true ? "开启净化器中..." : "关闭净化器中...";
+					var toast = isOpen == true ? "开启成功！" : "关闭成功！";
+					var params;
+					if(currentVehicle) {
+						if(isOpen == true) {
+							params = {
+								'flag': 0x80,
+								'switch': 1
+							};
+						} else {
+							params = {
+								'flag': 0x80,
+								'switch': 0
+							}
+						}
+						plus.nativeUI.showWaiting(showWaiting);
+						app.sendCommand(currentVehicle.did, cmdType, params, type, remark, function(err) {
+							if(err) {
+								plus.nativeUI.closeWaiting();
+								plus.nativeUI.toast(err);
+								return;
+							}
+							plus.nativeUI.closeWaiting();
+							plus.nativeUI.toast(toast);
+							if(isOpen == true) {
+								powerOnOff.src = 'images/ico_air_power_on.png';
+								airSpeed.src = 'images/ico_air_level_on.png';
+								firstOpenFlag = 1;
+								startRotate();
+								modeBox.innerHTML = '手动模式';
+								rotateTime = 50;
+								plus.nativeUI.toast('启动2分钟内为预热阶段，将以低速预热，2分钟后智能调速，也可以手动调速。');
+								isOpen = false;
+								airSpeedExplain.innerHTML = '低速';
+								if(intervalometer) {
+									clearInterval(intervalometer);
+									intervalometer();
+								}
+
+								countTimeDown = 120;
+								//设置启动预热时间（2分钟）
+								startDownTime = setInterval(function() {
+									countTimeDown--;
+									console.log(countTimeDown);
+								}, 1000);
+								if(countTimeDown == 0) {
+									clearInterval(startDownTime);
+								}
+								initCanvas(Canvas, context, widthCanvas, heightCanvas, rotateTime, qualityNum, carAirQuality); //调用画布设置函数
+							} else {
+								powerOnOff.src = 'images/ico_air_power_off.png';
+								airSpeed.src = 'images/ico_air_level_off.png';
+								autoMode.src = 'images/ico_air_auto_off.png';
+								modeBox.innerHTML = '';
+								airSpeedExplain.innerHTML = '停止';
+								airSpeedExplain.innerHTML = '';
+								if(intervalometer) {
+									clearInterval(intervalometer);
+								}
+								firstOpenFlag = 2;
+								rotateTime = 0;
+								initCanvas(Canvas, context, widthCanvas, heightCanvas, rotateTime, qualityNum, carAirQuality); //调用画布设置函数
+								speedNum = 2;
+								countTimeDown = 120;
+								isAuto = true;
+								isOpen = true;
+							}
+						});
+					} else {
+						plus.nativeUI.toast('请选择车辆');
+					}
+				}
+				//净化器工作模式设置
+				var autoModeCommond = function() {
+					var cmdType = IOT_CMD.SET_PARAM;
+					var params;
+					var type = 0;
+					var remark = isAuto == true ? "自动模式" : "手动模式";
+					if(currentVehicle) {
+						if(isAuto == true) {
+							params = {
+								'param_id': 0x0F6,
+								'air_mode': 1
+							};
+						} else {
+							params = {
+								'param_id': 0x0F6,
+								'air_mode': 0
+							}
+						}
+						app.sendCommand(currentVehicle.did, cmdType, params, type, remark, function(err) {
+							if(err) {
+								plus.nativeUI.toast(err);
+								return;
+							}
+							if(isAuto == true) {
+								autoMode.src = 'images/ico_air_auto_on.png';
+								modeBox.innerHTML = "自动模式";
+								isAuto = false;
+							} else {
+								autoMode.src = 'images/ico_air_auto_off.png';
+								modeBox.innerHTML = '手动模式';
+								isAuto = true;
+							}
+						});
+					} else {
+						plus.nativeUI.toast('请选择车辆');
+					}
+				}
+				//净化器空气调速设置
+				var airSpeedCommond = function() {
+					var cmdType = IOT_CMD.SET_PARAM;
+					var params;
+					var type = 0;
+					var remark = "调速设置";
+					if(currentVehicle) {
+						if(speedNum == 1) {
+							params = {
+								'param_id': 0x0F8,
+								'air_speed': 1
+							};
+						} else if(speedNum == 2) {
+							params = {
+								'param_id': 0x0F8,
+								'air_speed': 2
+							}
+						} else if(speedNum == 3) {
+							params = {
+								'param_id': 0x0F8,
+								'air_speed': 3
+							}
+						}
+						app.sendCommand(currentVehicle.did, cmdType, params, type, remark, function(err) {
+							if(err) {
+								plus.nativeUI.toast(err);
+								return;
+							}
+							if(speedNum == 1) {
+								airSpeed.src = 'images/ico_air_level_on.png';
+								airSpeedExplain.innerHTML = '低速';
+								rotateTime = 50;
+								initCanvas(Canvas, context, widthCanvas, heightCanvas, rotateTime, qualityNum, carAirQuality); //调用画布设置函数
+								speedNum = 2
+							} else if(speedNum == 2) {
+								airSpeed.src = 'images/ico_air_level_on_2.png';
+								airSpeedExplain.innerHTML = '中速';
+								rotateTime = 30;
+								initCanvas(Canvas, context, widthCanvas, heightCanvas, rotateTime, qualityNum, carAirQuality); //调用画布设置函数
+								speedNum = 3;
+							} else if(speedNum == 3) {
+								airSpeed.src = 'images/ico_air_level_on_3.png';
+								airSpeedExplain.innerHTML = '高速';
+								rotateTime = 20;
+								initCanvas(Canvas, context, widthCanvas, heightCanvas, rotateTime, qualityNum, carAirQuality); //调用画布设置函数
+								speedNum = 1;
+							}
+						});
+					} else {
+						plus.nativeUI.toast('请选择车辆');
+					}
+
+				}
+				//净化设置
+				var airCleanerPage = mui.preload({
+					'id': 'vehicle-air-cleaner-set',
+					'url': 'vehicle-air-cleaner-set.html'
+				})
+				var airCleanerBtn = document.getElementById('air-cleaner-set');
+				airCleanerBtn.addEventListener('tap', function(event) {
+					airCleanerPage.show('pop-in');
+				})
+				//曲线图信息
+				var airCleanerArea = function(timeX, airY) {
+					//坐标曲线图
+					var airArea = document.getElementById('air-area-basic');
+					var myAreaChart = echarts.init(airArea);
+					optionArea = null;
+					optionArea = {
+						title: {
+							show: true,
+							text: '车内空气质量指数',
+							left: 100,
+							textStyle: {
+								fontWeight: 100,
+								fontSize: '15',
+								align: 'center'
+							}
+						},
+						tooltip: {
+							trigger: 'axis',
+							axisPointer: {
+								type: 'cross',
+								label: {
+									backgroundColor: '#6a7985'
+								}
+							}
+						},
+						grid: {
+							right: '12%',
+							left: '10%',
+							top: '12%',
+							show: true
+						},
+						xAxis: {
+							name: '时间',
+							type: 'category',
+							boundaryGap: false,
+							data: timeX
+						},
+						yAxis: {
+							name: '空气指数',
+							type: 'value',
+							axisLine: {
+								lineStyle: {
+									width: 5,
+									type: 'solid',
+									// 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+									color: {
+										type: 'linear',
+										x: 0,
+										y: 0,
+										x2: 0,
+										y2: 1,
+										colorStops: [{
+											offset: 0,
+											color: '#F53D16' // 0% 处的颜色
+										}, {
+											offset: 1,
+											color: '#68F1A8' // 100% 处的颜色
+										}],
+										globalCoord: false // 缺省为 false
+									}
+									// 径向渐变，前三个参数分别是圆心 x, y 和半径，取值同线性渐变
+								}
+							}
+						},
+						dataZoom: [{
+							show: true,
+							type: 'inside',
+							zoomOnMouseWheel: true,
+							y: '90%',
+							start: 95,
+							end: 100
+						}],
+						series: [{
+							name: '空气指数',
+							data: airY,
+							type: 'line',
+							color: '#7AEDF3',
+							smooth: true,
+							areaStyle: {
+								normal: {
+									color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+										offset: 0,
+										color: '#F53D16'
+									}, {
+										offset: 1,
+										color: '#68F1A8'
+									}])
+								}
+							},
+							markArea: {
+								label: {
+									show: true,
+									position: 'right'
+								},
+							}
+						}]
+					};
+					if(optionArea && typeof optionArea === "object") {
+						myAreaChart.setOption(optionArea, true);
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

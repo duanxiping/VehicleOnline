@@ -400,6 +400,8 @@
 								return;
 							}
 							var cmdType = IOT_CMD.VEHICLE_CONTORL;
+							var type = 0;
+							var remark = '远程断油/断电';
 							var params = {
 								'flag': 4,
 								'switch': engineSwitch
@@ -407,6 +409,8 @@
 							break;
 						case '2':
 							var cmdType = IOT_CMD.VEHICLE_CONTORL;
+							var type = 0;
+							var remark = '一键设防';
 							var params = {
 								'flag': 2,
 								'switch': standSwitch
@@ -415,6 +419,8 @@
 						case '3':
 							var interval = document.getElementById('interval');
 							var cmdType = IOT_CMD.SET_PARAM;
+							var type = 0;
+							var remark = '回传间隔';
 							var params = {
 								'param_id': 0x0029,
 								'param_value': interval.value
@@ -423,6 +429,8 @@
 						case '4':
 							var speedLimit = document.getElementById('speedLimit');
 							var cmdType = IOT_CMD.SET_PARAM;
+							var type = 0;
+							var remark = '超速报警';
 							var params = {
 								'param_id': 0x0055,
 								'param_value': speedLimit.value
@@ -434,6 +442,8 @@
 							break;
 						case '7':
 							var cmdType = IOT_CMD.DEVICE_CONTORL;
+							var type = 0;
+							var remark = '重启设备';
 							var params = {
 								'control_cmd': 0x05,
 								'control_param': ''
@@ -441,7 +451,7 @@
 							break;
 					}
 					mui(this).button('loading');
-					app.sendCommand(currentVehicle.did, cmdType, params, function(err) {
+					app.sendCommand(currentVehicle.did, cmdType, params, type, remark, function(err) {
 						if(err) {
 							plus.nativeUI.toast(err);
 							mui(_this).button('reset');

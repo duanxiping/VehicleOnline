@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
@@ -11,26 +12,37 @@
 		<style>
 			html,
 			body {
-				overflow: hidden;
-				background-color: white;
-				/*width: 100%;
-				height: 100%;*/
+				/*overflow: hidden;*/
+				/*background-color: white;*/
+				/*width: 100%;*/
+				height: 100%;
 			}
+			
 			header {
 				background-color: #FFFFFF!important;
 				box-shadow: 0 0 0!important;
 			}
-			#content{
+			
+			#content {
 				position: relative;
+				width: 100%;
 			}
-			.mui-nav-time{
-				height: 50px;
-				margin: 10px;
-				padding: 0px;
+			
+			.mui-nav-time {
+				height: 70px;
+				margin: 0px;
+				width: 100%;
+				padding: 10px;
 				list-style-type: none;
 				overflow: hidden;
+				position: fixed;
+				z-index: 999;
+				/*top: 45px;*/
+				background-color: #efeff4;
+				border-bottom: 1px solid #E3E3E3;
 			}
-			li{
+			
+			li {
 				width: 50%;
 				padding: 0;
 				line-height: 48px;
@@ -40,28 +52,33 @@
 				background-color: white;
 				display: inline;
 			}
-			.li-time{
+			
+			.li-time {
 				background-color: #466eb0;
 				color: white;
 			}
-			#month{
+			
+			#month {
 				/*border-left: none;*/
 				border-bottom-right-radius: 9px;
 				border-top-right-radius: 9px
 			}
-			#day{
+			
+			#day {
 				border-right: none;
 				border-bottom-left-radius: 9px;
 				border-top-left-radius: 9px
 			}
-			.mui-total-oil-box{
+			
+			.mui-total-oil-box {
 				width: 100%;
-				border-top: 1px solid #E3E3E3;
 				padding: 0;
 				margin: 0;
+				margin-top: 70px;
 				position: relative;
 			}
-			.mui-calendar{
+			
+			.mui-calendar {
 				/*width: 100px;*/
 				text-align: center;
 				height: 48px;
@@ -70,122 +87,141 @@
 				font-size: 19px;
 				color: #466eb0;
 			}
-			.circle1{
-	            width: 140px;
-	            height: 140px;
-	            margin: 0 auto;
-	            background-color: #466eb0;
-	            border-radius: 50%;
-	            position: relative;
-       		}
-       		.circle2{
-	            width: 120px;
-	            height: 120px;
-	            position: absolute;
-	            top: 10px;
-	            left: 10px;
-	            background-color: white;
-	            border-radius: 50%;
-       		}
-       		.mui-total-text-box{
-       			width: 120px;
-	            height: 120px;
-	            text-align: center;
-	            padding-top: 35px;
-       		}
-       		.mui-total-title{
-       			font-size: 15px;
-       			margin: 0 auto;
-       			color: #777777;
-       			top: 40px;
-       		}
-       		.mui-span-total{
-       			font-size: 27px;
-       		}
-       		.mui-span-total-data{
-       			font-size: 24px;
-       		}
-       		#Prev{
-       			font-size: 30px;
-       			color: #466eb0;
-       			position: absolute;
-       			bottom: 20px;
-       			left: 40px;
-       		}
-       		#Next{
-       			font-size: 30px;
-       			color: #466eb0;
-       			position: absolute;
-       			bottom: 20px;
-       			right: 40px;
-       		}
-       		.mui-total-data-result{
+			
+			.circle1 {
+				width: 140px;
+				height: 140px;
+				margin: 0 auto;
+				background-color: #466eb0;
+				border-radius: 50%;
+				position: relative;
+			}
+			
+			.circle2 {
+				width: 120px;
+				height: 120px;
+				position: absolute;
+				top: 10px;
+				left: 10px;
+				background-color: white;
+				border-radius: 50%;
+			}
+			
+			.mui-total-text-box {
+				width: 120px;
+				height: 120px;
+				text-align: center;
+				padding-top: 35px;
+			}
+			
+			.mui-total-title {
+				font-size: 15px;
+				margin: 0 auto;
+				color: #777777;
+				top: 40px;
+			}
+			
+			.mui-span-total {
+				font-size: 27px;
+			}
+			
+			.mui-span-total-data {
+				font-size: 24px;
+			}
+			
+			#Prev {
+				font-size: 30px;
+				color: #466eb0;
+				position: absolute;
+				bottom: 20px;
+				left: 40px;
+			}
+			
+			#Next {
+				font-size: 30px;
+				color: #466eb0;
+				position: absolute;
+				bottom: 20px;
+				right: 40px;
+			}
+			
+			.mui-total-data-result {
 				margin: 10px;
 				padding: 0px;
 				list-style-type: none;
 				overflow: hidden;
-       		}
-       		.mui-data{
+			}
+			
+			.mui-data {
 				padding: 0;
 				float: right;
 				text-align: center;
 				display: inline;
-       		}
-       		.mui-total-oil-average{
-       			width: 50%;
-       		}
-       		.mui-total-mileage{
-       			width: 50%;
-       			border-right: 1px solid #ACACB4;
-       		}
-       		.mui-total-spend{
-       			width: 33.3%;
-       			border-left: 1px solid #ACACB4;
-       			border-right: 1px solid #ACACB4;
-       		}
-       		.mui-pie-title{
-       			width: 100%;
-       			font-size: 18px;
-       			color: #466eb0;
-       			font-weight: 400;
-       			display: block;
-       			/*margin-top: -20px;*/
-       			text-align: center;
-       		}
-       		.mui-area-title{
-       			font-size: 18px;
-       			color: #466eb0;
-       			font-weight: 400;
-       			margin-top: 40px;
-       			display: block;
-       			text-align: center;
-       		}
-       		#oil-area-basic{
-       			width: 100%;
-       			height: 330px;
-       			margin: 0 auto;
-       			padding: 10px;
-       			/*margin-top: -55px;*/
-       		}
-       		#container{
-       			height: 340px; 
-       			width: 100%; 
-       			margin: 0 auto; 
-       			padding: 0; 
-       			/*margin-top: -10px;*/
-       		}
-       		.mui-pie-show-data{
-       			width:100%;
-       			margin:0 auto;
-       			margin-bottom: 10px;
-       		}
-       		.mui-pie-span{
-       			font-size: 18px;
-       			color: #466eb0;
-       			font-weight: 400;
-       			display: block;
-       			text-align: center;
-       		}
+			}
+			
+			.mui-total-oil-average {
+				width: 50%;
+			}
+			
+			.mui-total-mileage {
+				width: 50%;
+				border-right: 1px solid #ACACB4;
+			}
+			
+			.mui-total-spend {
+				width: 33.3%;
+				border-left: 1px solid #ACACB4;
+				border-right: 1px solid #ACACB4;
+			}
+			
+			.mui-pie-title {
+				width: 100%;
+				font-size: 18px;
+				color: #466eb0;
+				font-weight: 400;
+				display: block;
+				/*margin-top: -20px;*/
+				text-align: center;
+			}
+			
+			.mui-area-title {
+				font-size: 18px;
+				color: #466eb0;
+				font-weight: 400;
+				margin-top: 40px;
+				display: block;
+				text-align: center;
+			}
+			
+			#oil-area-basic {
+				width: 100%;
+				height: 330px;
+				margin: 0 auto;
+				padding: 10px;
+				/*margin-top: -55px;*/
+			}
+			
+			#container {
+				height: 340px;
+				width: 100%;
+				margin: 0 auto;
+				padding: 0;
+				/*margin-top: -10px;*/
+			}
+			
+			.mui-pie-show-data {
+				width: 100%;
+				margin: 0 auto;
+				margin-bottom: 10px;
+			}
+			
+			.mui-pie-span {
+				font-size: 14px;
+				color: #466eb0;
+				font-weight: 400;
+				display: block;
+				text-align: center;
+			}
 		</style>
 	</head>
 
@@ -215,38 +251,40 @@
 				<span id="Next" class="mui-icon mui-icon-arrowright"></span>
 			</div>
 			<div class="mui-total-data-result">
-					<div class="mui-total-oil-average mui-data">
-						<span class="mui-total-title">平均油耗</span><br/>
-						<span id="avg-mileage" class="mui-span-total-data">0.0</span><span>L/100km</span>
-					</div>
-					<!--<div class="mui-total-spend mui-data">
+				<div class="mui-total-oil-average mui-data">
+					<span class="mui-total-title">平均油耗</span><br/>
+					<span id="avg-mileage" class="mui-span-total-data">0.0</span><span>L/100km</span>
+				</div>
+				<!--<div class="mui-total-spend mui-data">
 						<span class="mui-total-title">总花费</span><br/>
 						<span>¥</span><span class="mui-span-total-data">31.4</span>
 					</div>-->
-					<div class="mui-total-mileage mui-data">
-						<span class="mui-total-title">总行驶</span><br/>
-						<span id="total-mileage" class="mui-span-total-data">0.0</span><span>km</span>
-					</div>
+				<div class="mui-total-mileage mui-data">
+					<span class="mui-total-title">总行驶</span><br/>
+					<span id="total-mileage" class="mui-span-total-data">0.0</span><span>km</span>
 				</div>
-				<div id="oil-area-basic-box">
-					<span class="mui-area-title">百公里驾驶油耗月曲线图</span>
-					<div id="oil-area-basic"></div>	
-				</div>
+			</div>
+			<div id="oil-area-basic-box">
+				<span class="mui-area-title">百公里驾驶油耗月曲线图</span>
+				<div id="oil-area-basic"></div>
+			</div>
+			<div id="oil-pie-basic-box">
 				<span class="mui-pie-title" id="pie-title">百公里平均油耗图</span>
 				<div id="container"></div>
-				<div class="mui-pie-show-data">
+				<div id="pie-show-data" class="mui-pie-show-data">
 					<span id="pie-km" class="mui-pie-span"></span>
 					<span id="pie-avg-oil" class="mui-pie-span"></span>
 					<span id="pie-oil" class="mui-pie-span"></span>
 				</div>
-				<!--<div class="mui-oil-bottom-title">油耗排行榜</div>-->
+			</div>
+			<!--<div class="mui-oil-bottom-title">油耗排行榜</div>-->
 		</div>
 		<script src="js/mui.min.js"></script>
 		<script src="js/wistorm/define.js"></script>
 		<script src="js/wistorm/wistorm.js"></script>
-		<script src="js/wistorm/md5.js"></script>		
+		<script src="js/wistorm/md5.js"></script>
 		<script src="js/app.js"></script>
-		<script src="js/immersed.js" ></script>	
+		<script src="js/immersed.js"></script>
 		<script src="js/echarts.js"></script>
 		<script>
 			mui.init();
@@ -260,47 +298,52 @@
 				var pieAvgOil = document.getElementById('pie-avg-oil');
 				var pieOil = document.getElementById('pie-oil');
 				var day = document.getElementById('day');
-//				var week = document.getElementById('week');
+				//				var week = document.getElementById('week');
 				var month = document.getElementById('month');
-				var PrevButton = document.getElementById('Prev'); 
+				var PrevButton = document.getElementById('Prev');
 				var NextButton = document.getElementById('Next');
 				var dateBox = document.getElementById('date-box');
 				var pieTitle = document.getElementById('pie-title');
 				var areaBasicBox = document.getElementById('oil-area-basic-box');
-		   		var ul = document.getElementsByClassName("mui-nav-time"); 
-		   		//选择日和月的标志（日：1，月：2）
-		   		var mode = null;
-		   		var selectD= new Date();
-		   		var selectM= new Date();
+				var pieBasicBox = document.getElementById('oil-pie-basic-box');
+				var ul = document.getElementsByClassName("mui-nav-time");
+				var pieShowData = document.getElementById('pie-show-data');
+				var oilArea = document.getElementById("oil-area-basic");
+				var oilPie = document.getElementById("container");
+				//选择日和月的标志（日：1，月：2）
+				var mode = null;
+				var selectD = new Date();
+				var selectM = new Date();
 				var dateD = new Date();
 				var dateM = new Date();
 				//获取当前车辆
 				var currentVehicle = app.getCurrentVehicle();
-			   //日、周、月导航条设置
-			   	for(var i = 0;i<ul.length;i++){
-			        navSet(ul[i]);  
-			    }  
-			    function navSet(lis){  
-			        var liArr = lis.getElementsByTagName("li");  
-			        for(var i = 0;i < liArr.length;i++){  
-			            liArr[i].index = i;  
-			            liArr[i].onmouseover = function(){  
-			                for(var j = 0;j<liArr.length;j++){  
-			                    liArr[j].className = ""; 
-			                }  
-			                this.className = "li-time";
-			            }  
-			        }  
-			    }
-			    //第一次进入页面刷新页面数据
-				window.addEventListener('refreshOilWear', function(event){
-//					dayDate(new Date(selectDM.setDate(selectDM.getDate())), 1);
+				//日、周、月导航条设置
+				for(var i = 0; i < ul.length; i++) {
+					navSet(ul[i]);
+				}
+
+				function navSet(lis) {
+					var liArr = lis.getElementsByTagName("li");
+					for(var i = 0; i < liArr.length; i++) {
+						liArr[i].index = i;
+						liArr[i].onmouseover = function() {
+							for(var j = 0; j < liArr.length; j++) {
+								liArr[j].className = "";
+							}
+							this.className = "li-time";
+						}
+					}
+				}
+				//第一次进入页面刷新页面数据
+				window.addEventListener('refreshOilWear', function(event) {
+					//					dayDate(new Date(selectDM.setDate(selectDM.getDate())), 1);
 					monthDate(new Date(selectM.setMonth(selectM.getMonth())), 2);
 					month.className = 'li-time';
 					day.className = '';
 				});
 				//日的点击事件
-				day.addEventListener('tap', function(event){
+				day.addEventListener('tap', function(event) {
 					areaBasicBox.style.display = 'none';
 					pieTitle.style.marginTop = '40px'
 					dateBox.innerHTML = '';
@@ -308,76 +351,81 @@
 					dayDate(new Date(selectD.setDate(selectD.getDate())), mode);
 				});
 				//月的点击事件
-				month.addEventListener('tap', function(event){
+				month.addEventListener('tap', function(event) {
 					areaBasicBox.style.display = 'block';
 					pieTitle.style.marginTop = '-10px'
 					dateBox.innerHTML = '';
 					mode = 2;
-//					dateBox.innerHTML = selectDM.format('yyyy-MM');
+					//					dateBox.innerHTML = selectDM.format('yyyy-MM');
 					monthDate(new Date(selectM.setMonth(selectM.getMonth())), mode);
-					
+
 				});
 				//上一天按钮
-				PrevButton.addEventListener('tap', function(event){
-					switch(mode){
+				PrevButton.addEventListener('tap', function(event) {
+					switch(mode) {
 						case 1:
-							dayDate(new Date(selectD.setDate(selectD.getDate()-1)), mode);
-						break;
+							dayDate(new Date(selectD.setDate(selectD.getDate() - 1)), mode);
+							pieShowData.style.display = 'none';
+							break;
 						case 2:
-							monthDate(new Date(selectM.setMonth(selectM.getMonth()-1)), mode);
-						break;
+							monthDate(new Date(selectM.setMonth(selectM.getMonth() - 1)), mode);
+							pieShowData.style.display = 'none';
+							break;
 					}
 				});
 				//下一天按钮
-				NextButton.addEventListener('tap', function(event){
-					switch(mode){
+				NextButton.addEventListener('tap', function(event) {
+					switch(mode) {
 						case 1:
-							dayDate(new Date(selectD.setDate(selectD.getDate()+1)), mode);
-						break;
+							dayDate(new Date(selectD.setDate(selectD.getDate() + 1)), mode);
+							pieShowData.style.display = 'none';
+							break;
 						case 2:
-							monthDate(new Date(selectM.setMonth(selectM.getMonth()+1)), mode);
-						break;
+							monthDate(new Date(selectM.setMonth(selectM.getMonth() + 1)), mode);
+							pieShowData.style.display = 'none';
+							break;
 					}
-				});	
+				});
 				//日的时间显示函数
-				var dayDate = function(date, mode){
+				var dayDate = function(date, mode) {
 					var dates = date.format("yyyy-MM-dd");
-					dateBox.innerHTML = dates == dateD.format("yyyy-MM-dd") ? '今天': dates;
-					NextButton.style.display = selectD >= dateD ? 'none':'block';
+					dateBox.innerHTML = dates == dateD.format("yyyy-MM-dd") ? '今天' : dates;
+					NextButton.style.display = selectD >= dateD ? 'none' : 'block';
 					vehicleOilDatas(dates, mode);
-//					console.log('日。。。。。。。。。。。。。。。。。。');
+					//					console.log('日。。。。。。。。。。。。。。。。。。');
 				}
 				//月的时间显示函数
-				var monthDate = function(date, mode){
+				var monthDate = function(date, mode) {
 					var dates = date.format("yyyy-MM");
-					var nextMonth = new Date(date.setMonth(date.getMonth()+1)).format('yyyy-MM');
-					dateBox.innerHTML = dates;	
-					NextButton.style.display = selectM >= dateM ? 'none':'block';
+					var nextMonth = new Date(date.setMonth(date.getMonth() + 1)).format('yyyy-MM');
+					dateBox.innerHTML = dates;
+					NextButton.style.display = selectM >= dateM ? 'none' : 'block';
 					vehicleOilDatas(dates, mode, nextMonth);
-//					console.log('月。。。。。。。。。。。。。。。。。。');
+					//					console.log('月。。。。。。。。。。。。。。。。。。');
 				}
 				//获取车辆油耗数据
-				var vehicleOilDatas = function(dates, mode, nextMonth){
-					app.vehicleOilData(currentVehicle.did, dates, mode, nextMonth, function(oilData){
-						switch(mode){
+				var vehicleOilDatas = function(dates, mode, nextMonth) {
+					app.vehicleOilData(currentVehicle.did, dates, mode, nextMonth, function(oilData) {
+						switch(mode) {
 							case 1:
 								dayData(oilData);
-							break;
+								break;
 							case 2:
 								monthData(oilData);
-							break;
+								break;
 						}
 					});
 				}
 				//日的数据显示函数
-				var dayData = function(oilData){
-					if(oilData.data[0]){
+				var dayData = function(oilData) {
+					if(oilData.data[0]) {
+						pieBasicBox.style.display = 'block';
 						var od = oilData.data[0];
 						var totalOil = parseFloat(od.fuel).toFixed(1);
 						totalMileage.innerHTML = parseFloat(od.distance).toFixed(1);
 						totalOilWear.innerHTML = totalOil;
-						var avgOM = (od.fuel / od.distance)*100;
-						avgMileage.innerHTML = parseFloat(avgOM).toFixed(1);//日平均速度
+						var avgOM = (od.fuel / od.distance) * 100;
+						avgMileage.innerHTML = parseFloat(avgOM).toFixed(1); //日平均速度
 						//s1: 低速，s2: 中速，s3: 经济时速，s4: 高速，
 						var s1 = parseFloat(od.s1).toFixed(1);
 						var s2 = parseFloat(od.s2).toFixed(1);
@@ -389,50 +437,65 @@
 						var d3 = parseFloat(od.d3).toFixed(1);
 						var d4 = parseFloat(od.d4).toFixed(1);
 						//百公里油耗
-						var ao1 = parseFloat((s1 / d1)*100).toFixed(1);
-						var ao2 = parseFloat((s2 / d2)*100).toFixed(1);
-						var ao3 = parseFloat((s3 / d3)*100).toFixed(1);
-						var ao4 = parseFloat((s4 / d4)*100).toFixed(1);
-						var t0 = od.t0;//t0是怠速的时间
-						var s0 = totalOil-s1-s2-s3-s4;//s0: 怠速 = 总油耗 - s1 - s2 - s3 - s4
-						var idling = parseFloat(s0 / t0 * 3600).toFixed(1);//怠速的平均油耗
+						var ao1 = parseFloat((s1 / d1) * 100).toFixed(1);
+						var ao2 = parseFloat((s2 / d2) * 100).toFixed(1);
+						var ao3 = parseFloat((s3 / d3) * 100).toFixed(1);
+						var ao4 = parseFloat((s4 / d4) * 100).toFixed(1);
+						var t0 = od.t0; //t0是怠速的时间
+						var s0 = totalOil - s1 - s2 - s3 - s4; //s0: 怠速 = 总油耗 - s1 - s2 - s3 - s4
+						var idls = t0 != 0 ? (s0 / t0 * 3600) : 0;
+						var idling = parseFloat(idls).toFixed(1); //怠速的平均油耗
 						var S0 = parseFloat(s0).toFixed(1);
 						oilWearPie(S0, s1, s2, s3, s4, ao1, ao2, ao3, ao4, idling);
-					}else{
+					} else {
 						totalMileage.innerHTML = '0.0';
 						totalOilWear.innerHTML = '0.0';
 						avgMileage.innerHTML = '0.0';
+						pieBasicBox.style.display = 'none';
 						oilWearPie();
 					}
 				}
 				//月获取的数据函数
-				var monthData = function(oilData){
-					if(oilData.data){
+				var monthData = function(oilData) {
+					if(oilData.data.length != 0) {
+						areaBasicBox.style.display = 'block';
+						pieBasicBox.style.display = 'block';
 						var od = oilData.data;
 						//s1: 低速，s2: 中速，s3: 经济时速，s4: 高速，s0: 怠速 = 总油耗 - s1 - s2 - s3 - s4
-						var s1 = 0, s2 = 0, s3 = 0, s4 = 0, s0 = 0;
+						var s1 = 0,
+							s2 = 0,
+							s3 = 0,
+							s4 = 0,
+							s0 = 0;
 						//d1,d2,d3,d4分段行驶距离，t0是怠速的时间
-						var d1 = 0, d2 = 0, d3 = 0, d4 = 0, t0 = 0;
+						var d1 = 0,
+							d2 = 0,
+							d3 = 0,
+							d4 = 0,
+							t0 = 0;
 						//百公里油耗
-						var ao1 = 0, ao2 = 0, ao3 = 0, ao4 = 0;
-						var distance = 0;//行驶总距离
-						var fuel = 0;//总油耗
-						var fuelDay = [];//日油耗
-						var distanceDay = [];//日行驶距离
-						var avgOilMonth = 0;//月平均油耗
-						var avgOil_Y = [];//月平均油耗Y轴
-						var dayTime_X = [];//时间天X轴
-						var monthTime = [];//时间月
-						var idling = 0;//怠速的平均油耗
-						for(var i = 0; i < od.length; i++){
+						var ao1 = 0,
+							ao2 = 0,
+							ao3 = 0,
+							ao4 = 0;
+						var distance = 0; //行驶总距离
+						var fuel = 0; //总油耗
+						var fuelDay = []; //日油耗
+						var distanceDay = []; //日行驶距离
+						var avgOilMonth = 0; //月平均油耗
+						var avgOil_Y = []; //月平均油耗Y轴
+						var dayTime_X = []; //时间天X轴
+						var monthTime = []; //时间月
+						var idling = 0; //怠速的平均油耗
+						for(var i = 0; i < od.length; i++) {
 							distance = distance + od[i].distance;
 							distanceDay[i] = parseFloat(od[i].distance).toFixed(1);
 							fuelDay[i] = parseFloat(od[i].fuel).toFixed(1);;
 							fuel = fuel + od[i].fuel;
-							if(od[i].distance > 0){
-								avgOil_Y[i] = parseFloat((od[i].fuel / od[i].distance)*100).toFixed(1);
+							if(od[i].distance > 0) {
+								avgOil_Y[i] = parseFloat((od[i].fuel / od[i].distance) * 100).toFixed(1);
 							}
-							if(od[i]._id){
+							if(od[i]._id) {
 								dayTime_X[i] = od[i]._id.day;
 								monthTime = od[i]._id.month;
 							}
@@ -446,15 +509,15 @@
 							d4 = d4 + od[i].d4;
 							t0 = t0 + od[i].t0;
 						}
-						if(d1>0 && d2>0 && d3>0 && d4>0){
-							ao1 = (s1 / d1)*100;
-							ao2 = (s2 / d2)*100;
-							ao3 = (s3 / d3)*100;
-							ao4 = (s4 / d4)*100;
+						if(d1 > 0 && d2 > 0 && d3 > 0 && d4 > 0) {
+							ao1 = (s1 / d1) * 100;
+							ao2 = (s2 / d2) * 100;
+							ao3 = (s3 / d3) * 100;
+							ao4 = (s4 / d4) * 100;
 						}
 						s0 = fuel - (s1 + s2 + s3 + s4);
-						idling = s0 / t0 * 3600;
-						avgOilMonth = distance > 0 ? (fuel / distance)*100 : 0;
+						idling = t0 != 0 ? (s0 / t0 * 3600) : 0;
+						avgOilMonth = distance > 0 ? (fuel / distance) * 100 : 0;
 						totalMileage.innerHTML = parseFloat(distance).toFixed(1);
 						fuelTotal = parseFloat(fuel).toFixed(1);
 						totalOilWear.innerHTML = fuelTotal;
@@ -474,124 +537,143 @@
 						var avgOilDay = avgOil_Y;
 						var dayTime = dayTime_X;
 						//预加载油耗详情页面
-					    var oilDetailPage = mui.preload({
-					    	'id':'vehicle-oil-wear-detail',
-					    	'url':'vehicle-oil-wear-detail.html'
-					    });
-					    var oilDetailBtn = document.getElementById('oil-detail');
-					    oilDetailBtn.addEventListener('tap', function(event){
-					    		if(mode == 2){
-					    			mui.fire(oilDetailPage, 'refreshOilDetail',{
-							    		dataLengths : od.length,
-							    		fuelTotals : fuelTotal,
-							    		avgOilDays : avgOilDay,
-							    		dayTimes : dayTime,
-							    		monthTimes : monthTime,
-							    		distanceDays : distanceDay,
-							    		fuelDays : fuelDay
-					    			});
-					    			oilDetailPage.show('pop-in');
-					    		}
-					    	
-					    });
-					}else{
+						var oilDetailPage = mui.preload({
+							'id': 'vehicle-oil-wear-detail',
+							'url': 'vehicle-oil-wear-detail.html'
+						});
+						var oilDetailBtn = document.getElementById('oil-detail');
+						oilDetailBtn.addEventListener('tap', function(event) {
+							if(mode == 2) {
+								mui.fire(oilDetailPage, 'refreshOilDetail', {
+									dataLengths: od.length,
+									fuelTotals: fuelTotal,
+									avgOilDays: avgOilDay,
+									dayTimes: dayTime,
+									monthTimes: monthTime,
+									distanceDays: distanceDay,
+									fuelDays: fuelDay
+								});
+								oilDetailPage.show('pop-in');
+							}
+						});
+					} else {
 						totalMileage.innerHTML = '0.0';
 						totalOilWear.innerHTML = '0.0';
 						avgMileage.innerHTML = '0.0';
+						areaBasicBox.style.display = 'none';
+						pieBasicBox.style.display = 'none';
 						oilWearPie();
 					}
 				}
 				//曲线图信息
-				var oilWearArea = function(avgOil_Y, dayTime_X){
+				var oilWearArea = function(avgOil_Y, dayTime_X) {
 					//坐标曲线图
-				    var oilArea = document.getElementById("oil-area-basic");
 					var myAreaChart = echarts.init(oilArea);
 					optionArea = null;
 					optionArea = {
 						tooltip: {
-						    trigger: 'axis',
-						    axisPointer: {
-				            type: 'cross',
-					            label: {
-					                backgroundColor: '#6a7985'
-					            }
-				        	}
+							trigger: 'axis',
+							axisPointer: {
+								type: 'cross',
+								label: {
+									backgroundColor: '#6a7985'
+								}
+							}
 						},
-					    xAxis: {
-					        type: 'category',
-					        boundaryGap: false,
-					        data: dayTime_X
-					    },
-					    yAxis: {
-					    	name : '(L/100KM)',
-					        type: 'value'
-					    },
-					    series: [{
-					        data: avgOil_Y,
-					        type: 'line',
-					        smooth: true,
-					        areaStyle: {
-					        	color:'#466eb0'
-					        }
-					    }]
-					};
-					;
-					if (optionArea && typeof optionArea === "object") {
-					    myAreaChart.setOption(optionArea, true);
+						grid: {
+							right: '18%'
+						},
+						legend: {
+							data: ['百公里油耗']
+						},
+						xAxis: {
+							name: '日期',
+							type: 'category',
+							boundaryGap: false,
+							data: dayTime_X
+						},
+						yAxis: {
+							name: '(L/100KM)',
+							type: 'value'
+						},
+						series: [{
+							name: '百公里油耗',
+							data: avgOil_Y,
+							type: 'line',
+							smooth: true,
+							areaStyle: {
+								color: '#466eb0'
+							}
+						}]
+					};;
+					if(optionArea && typeof optionArea === "object") {
+						myAreaChart.setOption(optionArea, true);
 					}
 				}
 				//饼状图信息
-				var oilWearPie = function(s0, s1, s2, s3, s4, ao1, ao2, ao3, ao4, idl){
-				    var oilPie = document.getElementById("container");
+				var oilWearPie = function(s0, s1, s2, s3, s4, ao1, ao2, ao3, ao4, idl) {
+					var results = Math.sin(1 / 2);
 					var myPieChart = echarts.init(oilPie);
 					optionPie = null;
 					optionPie = {
-					    tooltip : {
-					        trigger: 'item',
-					        formatter: "{a} {c} L",
-					        triggerOn: 'click',
+						tooltip: {
+							trigger: 'item',
+							formatter: " {b}<br/>{a}: {c} L",
+							triggerOn: 'click',
 							position: function(point, params, dom, rect, size) {
-//								console.log('饼状图的数据是============='+JSON.stringify(params));
 								pieKm.innerHTML = '';
 								pieAvgOil.innerHTML = '';
 								pieOil.innerHTML = '';
+								pieShowData.style.display = 'block';
 								var ao = [ao1, ao2, ao3, ao4, idl];
 								var section = ['(0-30km)', '(30-60km)', '(60-90km)', '( > 90km)', ''];
 								var unit = params.dataIndex == 4 ? 'L/hr' : 'L/100km';
-									pieKm.innerHTML = params.name + section[params.dataIndex];
-									pieAvgOil.innerHTML = '平均油耗 :'+ao[params.dataIndex]+ unit;
-									pieOil.innerHTML = params.seriesName + params.data.value+'L';
+								pieKm.innerHTML = params.name + section[params.dataIndex];
+								pieAvgOil.innerHTML = '平均油耗 :' + ao[params.dataIndex] + unit;
+								pieOil.innerHTML = params.seriesName + params.data.value + 'L';
 							},
-					    },
-					    series : [
-					        {
-					            name: '油耗量 :',
-					            type: 'pie',
-					            radius: [0, '82%'],
-					            data:[
-					                {value:s1, name:'低速'},
-					                {value:s2, name:'中速'},
-					                {value:s3, name:'经济时速'},
-					                {value:s4, name:'高速'},
-					                {value:s0, name:'怠速'}
-						            ],
-						        labelLine: {
-							        normal: {
-							           position: 'inner'
-							        }
-						        },
-						        label: {
-							        normal: {
-							            position: 'inner'
-							        }
-					            },
-					        }
-					    ]
+						},
+						series: [{
+							name: '油耗量 ',
+							type: 'pie',
+							radius: [0, '82%'],
+							data: [{
+									value: s1,
+									name: (s1 && s1 != 0.0 ? '低速' : '')
+								},
+								{
+									value: s2,
+									name: (s2 && s2 != 0.0 ? '中速' : '')
+								},
+								{
+									value: s3,
+									name: (s3 && s3 != 0.0 ? '经济时速' : '')
+								},
+								{
+									value: s4,
+									name: (s4 && s4 != 0.0 ? '高速' : '')
+								},
+								{
+									value: s0,
+									name: (s0 && s0 != 0.0 ? '怠速' : '')
+								}
+							],
+							labelLine: {
+								normal: {
+									position: 'inner'
+								}
+							},
+							label: {
+								normal: {
+									position: 'inner'
+								}
+							},
+						}]
 					};
-					if (optionPie && typeof optionPie === "object") {
-					    myPieChart.setOption(optionPie, true);
+					if(optionPie && typeof optionPie === "object") {
+						myPieChart.setOption(optionPie, true);
 					}
-					
+
 				}
 			});
 		</script>

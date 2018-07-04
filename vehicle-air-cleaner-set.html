@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/icons-extra.css" rel="stylesheet" />
+		<link href="css/iconfont.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			header {
+				background-color: #FFFFFF!important;
+				box-shadow: 0 0 0!important;
+			}
+			
+			html,
+			body {
+				background-color: white;
+				overflow: hidden;
+			}
+			
+			.mui-content {
+				background-color: white;
+			}
+			
+			.mui-intelligent-mode {
+				width: 100%;
+				height: 50px;
+				border-bottom: 1px solid #ACACB4;
+			}
+			
+			.mui-intelligent-span {
+				display: inline-block;
+				font-size: 14px;
+				margin-left: 10px;
+				margin-top: 15px;
+			}
+			
+			.mui-switch {
+				float: right;
+				top: 10px;
+				right: 10px;
+			}
+			
+			.mui-timing-opening {
+				width: 100%;
+				height: 50px;
+				position: relative;
+				border-bottom: 1px solid #ACACB4;
+			}
+			
+			.mui-opening-length {
+				width: 100%;
+			}
+			
+			.mui-image-timer {
+				height: 30px;
+				width: 30px;
+				margin: 10px 0px 0px 15px;
+			}
+			
+			.mui-image-timer-length {
+				height: 30px;
+				width: 30px;
+				margin: 0;
+			}
+			
+			.mui-span-timer {
+				color: #466eb0;
+			}
+			
+			.mui-span-timer-text {
+				display: inline-block;
+				position: absolute;
+				font-size: 14px;
+				top: 15px;
+				left: 50px;
+			}
+			
+			.mui-icon-arrowright {
+				float: right;
+				margin-top: 10px;
+				margin-right: 10px;
+			}
+			
+			.mui-set-length {
+				width: 100%;
+				height: 20px;
+				list-style-type: none;
+				padding: 0;
+			}
+			
+			.mui-set-length li {
+				float: left;
+				font-size: 14px;
+				margin-left: 15px;
+			}
+			
+			
+			#timer-circle-point {
+				width: 100%;
+				height: 20px;
+				position: relative;
+				margin: 10px 0px 0px 20px;
+			}
+			
+			#timer-circle-point div {
+				width: 80%;
+				height: 5px;
+				position: absolute;
+				top: 50%;
+				left: 10px;
+				margin-top: -2.5px;
+				border: 1px solid #ddd;
+				background: #ccc;
+			}
+			
+			#timer-circle-point>span {
+				position: absolute;
+				top: 0;
+				width: 20px;
+				height: 20px;
+				border: 2px solid #ddd;
+				border-radius: 50%;
+				background: #ccc;
+				color: #fff;
+			}
+			
+			#timer-circle-point>span:nth-child(1) {
+				left: 0%;
+				background: #ccc;
+			}
+			
+			#timer-circle-point>span:nth-child(2) {
+				left: 18%;
+				background: #ccc;
+			}
+			
+			#timer-circle-point>span:nth-child(3) {
+				left: 38%;
+				background: #ccc;
+			}
+			
+			#timer-circle-point>span:nth-child(4) {
+				left: 58%;
+				background: #ccc;
+			}
+			
+			#timer-circle-point>span:nth-child(5) {
+				left: 78%;
+				background: #ccc;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">净化设置</h1>
+		</header>
+
+		<div id="content" class="mui-content">
+			<div class="mui-intelligent-mode">
+				<!-- 蓝色开关关闭状态 -->
+				<span class="mui-intelligent-span">智能模式</span>
+				<div class="mui-switch mui-switch-blue">
+					<div class="mui-switch-handle"></div>
+				</div>
+			</div>
+			<div class="mui-intelligent-mode">
+				<!-- 蓝色开关关闭状态 -->
+				<span class="mui-intelligent-span">定时开启净化</span>
+				<div class="mui-switch mui-switch-blue">
+					<div class="mui-switch-handle"></div>
+				</div>
+			</div>
+			<div id="timing-open" class="mui-timing-opening">
+				<img src="images/ico_timer.png" class="mui-image-timer" /><span class="mui-span-timer-text">定时开启 <span id="timer-open-box" class="mui-span-timer">00:00</span></span>
+				<p class="mui-icon mui-icon-arrowright"></p>
+			</div>
+			<ul class="mui-table-view mui-opening-length">
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">
+						<img src="images/ico_timer_duration.png" class="mui-image-timer-length" /><span class="mui-span-timer-text">开启时长  <span id="open-length-box" class="mui-span-timer">0</span></span>
+					</a>
+					<div class="mui-collapse-content">
+						<ul class="mui-set-length">
+							<li>30分钟</li>
+							<li>60分钟</li>
+							<li>90分钟</li>
+							<li>100分钟</li>
+							<li>120分钟</li>
+						</ul>
+						<div id="timer-circle-point">
+							<!-- 进度条 -->
+							<div>
+								<span></span>
+							</div>
+							<!-- 五个圆 -->
+							<span id="minute-60"></span>
+							<span id="minute-90"></span>
+							<span id="minute-100"></span>
+							<span id="minute-120"></span>
+							<span id="minute-30"></span>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/wistorm/define.js"></script>
+		<script src="js/wistorm/wistorm.js"></script>
+		<script src="js/wistorm/md5.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/immersed.js"></script>
+		<script>
+			mui.plusReady(function() {
+				var timerOpenBox = document.getElementById('timer-open-box');
+				var timingOpenBox = document.getElementById('timing-open');
+				var openLengthBox = document.getElementById('open-length-box')
+				var minute_30 = document.getElementById('minute-30');
+				var minute_60 = document.getElementById('minute-60');
+				var minute_90 = document.getElementById('minute-90');
+				var minute_100 = document.getElementById('minute-100');
+				var minute_120 = document.getElementById('minute-120');
+				//时间选择器
+				timingOpenBox.addEventListener('tap', function(event) {
+					var dDate = new Date();
+					dDate.setHours(0);
+					dDate.setMinutes(0);
+					dDate.setSeconds(0);
+					plus.nativeUI.pickTime(function(e) {
+						var d = e.date;
+						_startTime = d.format('hh:mm');
+						timerOpenBox.innerHTML = _startTime;
+					}, function(e) {}, {
+						title: "定时时间",
+						time: dDate
+					});
+				});
+				minute_30.addEventListener('tap', function(event){
+					pointColor(30)
+					minute_30.style.background = 'green';
+				});
+				minute_60.addEventListener('tap', function(event){
+					pointColor(60)
+					minute_60.style.background = 'green';
+				});
+				minute_90.addEventListener('tap', function(event){
+					pointColor(90)
+					minute_90.style.background = 'green';
+				});
+				minute_100.addEventListener('tap', function(event){
+					pointColor(100)
+					minute_100.style.background = 'green';
+				});
+				minute_120.addEventListener('tap', function(event){
+					pointColor(120)
+					minute_120.style.background = 'green';
+				});
+				//设置圆点颜色
+				var pointColor = function(mode){
+					openLengthBox.innerHTML = '';
+					openLengthBox.innerHTML = mode;
+					minute_30.style.background = '#ccc';
+					minute_60.style.background = '#ccc';
+					minute_90.style.background = '#ccc';
+					minute_100.style.background = '#ccc';
+					minute_120.style.background = '#ccc';
+				}
+			});
+		</script>
+	</body>
+
+</html>

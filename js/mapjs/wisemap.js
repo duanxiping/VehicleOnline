@@ -1,5 +1,5 @@
-﻿var baidumap = new BMap.Map("container");
-
+﻿//var baidumap = new BMap.Map("container");
+var baidumap;
 function wiseMap(map_type, div_map, center_point, zoom, opt, panorama_map) {
     var map = null;
     switch (map_type) {

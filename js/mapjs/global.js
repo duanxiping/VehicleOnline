@@ -713,7 +713,8 @@ function getOnLine(vehicle) {
 	    var now = new Date();
 	    rcv_time = new Date(vehicle.activeGpsData.rcvTime);
 	    var m = dateOnLine(now, rcv_time, "mm");
-	    if (m < 10) {
+	    console.log('接收时间============='+m);
+	    if (m < 15) {
 	        desc = true;
 	    } else {
 	        desc = false;

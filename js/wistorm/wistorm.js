@@ -49,11 +49,12 @@ var ajax_function = function(obj){
 			data:obj.data,
 			dataType:obj.dataType,//服务器返回json格式数据
 			type:obj.type,//HTTP请求类型
-			timeout:10000,//超时时间设置为10秒；
+			timeout:20000,//超时时间设置为10秒；
 			headers:{'Content-Type':'application/json'},	              
 			success:obj.success,
 			error:obj.error
 		});	
+//		console.log("链接----------------"+obj.url);
 //		mui.getJSON(obj.url, obj.data, obj.success);
 	}else{
 		mui.toast("当前网络不给力，请稍后再试");
@@ -83,6 +84,15 @@ var _get = function(path, callback){
 // 获取地理位置
 var getLocation = function(lon, lat, callback){
 	var path = 'http://api.map.baidu.com/geocoder/v2/?location=' + lat + ',' + lon + '&output=json&pois=0&ak=647127add68dd0a3ed1051fd68e78900';
+//  console.log(path);
+    _get(path, function (obj) {
+        callback(obj);
+    });
+};
+
+// 获取城市空气质量
+var getCityQuality = function(city, callback){
+	var path = 'http://www.pm25.in/api/querys/aqi_details.json?city='+city+'&avg=true&stations=no&token=GmBqBNJhqwsNf19Fwqdy';
 //  console.log(path);
     _get(path, function (obj) {
         callback(obj);
@@ -495,7 +505,7 @@ WiStormAPI.prototype.validCode = function (mobile, email, valid_type, valid_code
 //   params: 对应参数;
 // 返回：
 //    status_code: 状态码
-WiStormAPI.prototype.createCommand = function (did, cmd_type, params, access_token, callback) {
+WiStormAPI.prototype.createCommand = function (did, cmd_type, params, type, remark, access_token, callback) {
     this.init();
 	this.sign_obj.method = 'wicare._iotCommand.create';
     this.sign_obj.dev_key = this.dev_key;
@@ -503,10 +513,12 @@ WiStormAPI.prototype.createCommand = function (did, cmd_type, params, access_tok
     this.sign_obj.did = did;
     this.sign_obj.cmd_type = cmd_type;
     this.sign_obj.params = params;
+    this.sign_obj.remark = remark;
+    this.sign_obj.type = type;
     this.sign_obj.sign = this.sign();
     var params = raw2(this.sign_obj);
     var path = API_URL + "/router/rest?" + params;
-    console.log(path);
+    console.log("访问地址"+path);
     _get(path, function (obj) {
         callback(obj);
     });

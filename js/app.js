@@ -906,7 +906,7 @@
 				map: 'BAIDU'
 			};
 			wistorm_api._get('_iotDevice', query, 'activeGpsData,params', state.token, function(obj) {
-				console.log(JSON.stringify(obj));
+//				console.log(JSON.stringify(obj));
 				if(obj.status_code == 0) {
 					return callback(obj.data);
 				} else {
@@ -973,11 +973,13 @@
 	/*
 	 * 发送指令
 	 */
-	owner.sendCommand = function(did, cmdType, params, callback) {
+	owner.sendCommand = function(did, cmdType, params, type, remark, callback) {
 		var state = owner.getState();
 		if(state) {
-			wistorm_api.createCommand(did, cmdType, params, state.token, function(obj) {
-				console.log(JSON.stringify(obj));
+			console.log("id================="+did);
+			wistorm_api.createCommand(did, cmdType, params, type, remark, state.token, function(obj) {
+				console.log("净化器测试---------"+JSON.stringify(obj));
+//				console.log("状态码================="+obj.status_code);
 				if(obj.status_code == 0) {
 					return callback();
 				} else if(obj.status_code == 0x0006) {
@@ -1174,6 +1176,30 @@
 					return callback(obj);
 				} else {
 					return callback('获取轨迹数据失败，请稍后重试');
+				}
+			});
+		} else {
+			return callback('出现异常，请重新登录后重试');
+		}
+	};
+	
+	/*
+	 * 获取轨迹列表
+	 */
+	owner.listAirData = function(did, callback) {
+		var state = owner.getState();
+		if(state) {
+			var query = {
+				did: did
+//				gpsTime: startTime + '@' + endTime,
+//				map: 'BAIDU'
+			};
+			wistorm_api._list('_iotGpsData', query, 'air', 'gpsTime', 'gpsTime', 0, 0, 0, -1, state.token, function(obj) {
+				console.log(JSON.stringify(obj));
+				if(obj.status_code == 0) {
+					return callback(obj);
+				} else {
+					return callback('获取空气质量数据失败，请稍后重试');
 				}
 			});
 		} else {

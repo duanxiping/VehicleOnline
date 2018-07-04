@@ -456,11 +456,13 @@
 								plus.nativeUI.showWaiting('指令发送中...');
 								if(currentVehicle.lock){ //一键解锁
 									var cmdType = IOT_CMD.VEHICLE_CONTORL;
+									var type = 0;
+									var remark = '锁车';
 									var params = {
 										'flag': 4,
 										'switch': 1
 									};
-									app.sendCommand(currentVehicle.did, cmdType, params, function(err){
+									app.sendCommand(currentVehicle.did, cmdType, params, type, remark, function(err){
 										if (err) {
 											plus.nativeUI.closeWaiting();
 											plus.nativeUI.toast(err);
@@ -485,11 +487,13 @@
 									});
 								}else{ //一键锁车
 									var cmdType = IOT_CMD.VEHICLE_CONTORL;
+									var type = 0;
+									var remark = '一键锁车';
 									var params = {
 										'flag': 4,
 										'switch': 0
 									};
-									app.sendCommand(currentVehicle.did, cmdType, params, function(err){
+									app.sendCommand(currentVehicle.did, cmdType, params, type, remark, function(err){
 										if (err) {
 											plus.nativeUI.closeWaiting();
 											plus.nativeUI.toast(err);
@@ -537,11 +541,13 @@
 								plus.nativeUI.showWaiting('指令发送中...');
 								if(currentVehicle.cut){ //一键解锁
 									var cmdType = IOT_CMD.VEHICLE_CONTORL;
+									var type = 0;
+									var remark = '一键解锁';
 									var params = {
 										'flag': 4,
 										'switch': 1
 									};
-									app.sendCommand(currentVehicle.did, cmdType, params, function(err){
+									app.sendCommand(currentVehicle.did, cmdType, params, type, remark, function(err){
 										if (err) {
 											plus.nativeUI.closeWaiting();
 											plus.nativeUI.toast(err);
@@ -555,11 +561,13 @@
 									});
 								}else{ //一键锁车
 									var cmdType = IOT_CMD.VEHICLE_CONTORL;
+									var type = 0;
+									var remark = '一键锁车';
 									var params = {
 										'flag': 4,
 										'switch': 0
 									};
-									app.sendCommand(currentVehicle.did, cmdType, params, function(err){
+									app.sendCommand(currentVehicle.did, cmdType, params, type, remark, function(err){
 										if (err) {
 											plus.nativeUI.closeWaiting();
 											plus.nativeUI.toast(err);
@@ -585,9 +593,11 @@
 					var currentVehicle = app.getCurrentVehicle();
 					if(currentVehicle){
 						var cmdType = IOT_CMD.GET_GPS;
+						var type = 0;
+						var remark = '刷新位置';
 						var params = {};
 						setRefreshStatus(true);
-						app.sendCommand(currentVehicle.did, cmdType, params, function(err){
+						app.sendCommand(currentVehicle.did, cmdType, params, type, remark, function(err){
 							if (err) {
 								plus.nativeUI.toast(err);
 								setRefreshStatus(false);

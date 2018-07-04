@@ -164,6 +164,9 @@
 			            <li id="oilWear" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
 			                    <span class="mui-icon iconfont icon-sujuyuce" style="color: #EEC900"></span>
 			                    <div class="mui-media-body">油耗统计</div></a></li>
+			            <li id="airCleaner" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+			                    <span class="mui-icon iconfont icon-kongqijinghuaqitubiaotiaozhengkaobei" style="color: #24EE82"></span>
+			                    <div class="mui-media-body">空气净化</div></a></li>        
 			            <li id="booking" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
 			                    <span class="mui-icon iconfont icon-yuyue-copy" style="color: royalblue"></span>
 			                    <div class="mui-media-body">预约安装</div></a></li>
@@ -253,6 +256,7 @@
 					mui.fire(mileagePage, 'refreshTravel', null);
 					mileagePage.show('pop-in');
 				});
+				//油耗统计
 				var oilWearPage = mui.preload({
 					'id':'vehicle-oil-wear',
 					'url':'vehicle-oil-wear.html'
@@ -261,6 +265,16 @@
 				oilWearButton.addEventListener('tap', function(event){
 					mui.fire(oilWearPage, 'refreshOilWear', null);
 					oilWearPage.show('pop-in');
+				});
+				//空气净化
+				var airCleanerPage = mui.preload({
+					'id':'vehicle-air-cleaner',
+					'url':'vehicle-air-cleaner.html'
+				});
+				var airCleanerButton = document.getElementById('airCleaner');
+				airCleanerButton.addEventListener('tap', function(event){
+					mui.fire(airCleanerPage, 'airDeviceRefresh', null);
+					airCleanerPage.show('pop-in');
 				});
 				var vehicleButton = document.getElementById('vehicle');
 				vehicleButton.addEventListener('tap', function(event) {

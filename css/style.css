@@ -46,6 +46,11 @@ header {
 	border: 1px solid #f94d41;
 }
 
+.mui-btn-green {
+	background-color: #05D0CA;
+	border: 1px solid #05D0CA;
+}
+
 a {
     color: #466eb0;
 }

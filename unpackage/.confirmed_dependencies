@@ -244,7 +244,9 @@
       "article-detail.html",
       "service-list.html",
       "vehicle-oil-wear.html",
-      "vehicle-mileage.html"
+      "vehicle-mileage.html",
+      "vehicle-air-cleaner.html",
+      "circle-demo4.html"
     ]
   },
   "playback.html": {
@@ -710,6 +712,12 @@
   "vehicle-strock-map.html": {
     "resources": [
       "fonts/mui.ttf"
+    ]
+  },
+  "vehicle-air-cleaner.html": {
+    "refer": [
+      "vehicle-bind-device.html",
+      "vehicle-air-cleaner-set.html"
     ]
   }
 }

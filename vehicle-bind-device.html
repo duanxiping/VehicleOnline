@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/icons-extra.css" rel="stylesheet" />
+		<link href="css/iconfont.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			.mui-input-group label {
+				width: 15%;
+			}
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			.mui-icon-color {
+				color: #AAAAAA;
+			}
+			.mui-send-btn {
+				float: left;
+    				width: 100px;
+    				line-height: 1.3;
+    				border: 0px;
+    				color: blue;
+			}
+			
+			.mui-valid-text-box {
+				width: 50%;
+    				float: left;
+			}
+			
+			.mui-input {
+				float: left!important;
+				/*width: 50%!important;*/
+			}
+			
+			.mui-icon-extra-sweep {
+			    font-size: 20px;
+			    position: absolute;
+			    z-index: 1;
+			    top: 10px;
+			    right: 0;
+			    width: 38px;
+			    height: 38px;
+			    text-align: center;
+			    color: #999;
+			    /*font-weight: bold;*/
+			}
+			header {
+				background-color: #FFFFFF!important;
+				box-shadow: 0 0 0!important;
+			}
+			#delete {
+				display: none;
+			}
+			.mui-label{
+				padding: 8px 15px;
+			}
+			#service-date {
+				width: 100%;
+				text-align: text;
+				font-size: 13px;
+				padding: 20px 10px 0px 10px;
+				color: #999999;
+				/*display: none;*/
+			} 
+			
+			#service-date .mui-row {
+				width: 100%;
+				text-align: center;
+			}
+			
+			#service-date .mui-row span {
+				padding-right: 15px;
+			}
+			.mui-obd-instructions{
+				margin-top: 10px;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">绑定终端</h1>
+		</header>
+
+		<div id="content" class="mui-content">
+			<form id="vehicleForm" class="mui-input-group">
+				<div class="mui-input-row">
+					<label class="mui-label"><span class="iconfont icon-shebei1 mui-icon-color"></span></label>
+					<input id='deviceId' type="number" class="mui-input" placeholder="扫描或输入序列号">
+					<span id="scan" class="mui-icon mui-icon-extra mui-icon-extra-sweep"></span>
+				</div>
+				<div class="mui-input-row">
+					<label class="mui-label" ><span class="iconfont icon-iconfontzz4 mui-icon-color"></span></label>
+					<input id='sim-number' type="text" class="mui-input-clear mui-input" placeholder="请输入SIM卡号">
+				</div>
+				<div class="mui-input-row">
+					<label class="mui-label"><span class="iconfont icon-yingjianbanben mui-icon-color"></span></label>
+					<input id='hardware-version' type="text" class="mui-input-clear mui-input" placeholder="硬件版本号">
+				</div>
+				<div class="mui-input-row">
+					<label class="mui-label" ><span class="iconfont icon-ruanjianbanben mui-icon-color"></label>
+					<input id='soft-version' type="number" class="mui-input" placeholder="软件版本号" style="width: 40%; float: left;">
+				</div>
+				<div class="mui-input-row">
+					<label class="mui-label" ><span class="iconfont icon-xufei mui-icon-color"></label>
+					<input id='renew-longtime' type="number" class="mui-input" placeholder="请选择续费时长" style="width: 40%; float: left;">
+				</div>
+			</form>
+			<div id="service-date">
+				<div class="mui-row">
+					<label>起始时间：</label><span id="serviceRegDate"></span><label>到期时间：</label><span id="serviceExpireIn"></span>
+				</div>
+			</div>
+			<div class="mui-content-padded">
+				<button id='bind' class="mui-btn mui-btn-block mui-btn-green" data-loading-text="绑定中..." disabled>绑定</button>
+				<button id='save' class="mui-btn mui-btn-block mui-btn-primary" data-loading-text="保存中...">保存</button>
+				<button id='renew' class="mui-btn mui-btn-block mui-btn-warning" data-loading-text="续费中...">续费</button>
+				<button id='unbind' class="mui-btn mui-btn-block mui-btn-danger" data-loading-text="解绑中...">解绑</button>
+			</div>
+			<div class="mui-obd-instructions"><a href="#">常用OBD安装位置？</a></div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/wistorm/define.js"></script>
+		<script src="js/wistorm/wistorm.js"></script>
+		<script src="js/wistorm/md5.js"></script>		
+		<script src="js/app.js"></script>
+		<script src="js/immersed.js" ></script>		
+		<script>
+		</script>
+	</body>
+
+</html>
